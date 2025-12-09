@@ -105,7 +105,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             font-family: 'Press Start 2P';
-            line-height: 1.8; /* Added line height for mobile spacing */
+            line-height: 1.8;
         }
 
         .status-active {
@@ -430,12 +430,13 @@
         let gameRunning = false;
         let score = 0;
         
-        // --- SPEED LOGIC: DETECT MOBILE VS DESKTOP ---
-        // If width < 600 (Mobile), Speed = 8 (Fast). If Desktop, Speed = 5 (Slow).
+        // --- SPEED LOGIC: TURBO MODE FOR MOBILE ---
+        // If width < 600 (Mobile): Speed = 12 (Very Fast), Jump = -11
+        // If Desktop: Speed = 5 (Slow/Normal), Jump = -9
         let isMobile = window.innerWidth < 600;
-        let speed = isMobile ? 8 : 5;
-        let gravity = isMobile ? 0.6 : 0.4; // Gravity feels different on small screens
-        let jumpPower = isMobile ? -10 : -9;
+        let speed = isMobile ? 12 : 5;
+        let gravity = isMobile ? 0.8 : 0.4; 
+        let jumpPower = isMobile ? -11 : -9;
 
         let player = { x: 50, y: 100, w: 20, h: 20, dy: 0, jumpPower: jumpPower, grounded: true };
         let obstacles = [];
@@ -470,8 +471,8 @@
             }
 
             frame++;
-            // Adjust spawn rate based on speed
-            let spawnRate = isMobile ? 70 : 100;
+            // Spawn rate much faster on mobile to match the high speed
+            let spawnRate = isMobile ? 35 : 100;
 
             if (frame % spawnRate === 0) { 
                 let height = Math.random() > 0.5 ? 20 : 30;
