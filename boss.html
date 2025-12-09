@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BOSS: SPINE OF HEAVEN</title>
-    <link rel="icon" type="image/png" href="delta.png">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         /* --- CORE --- */
@@ -274,37 +273,34 @@
             }
         }
 
-        /* FIXED ESCAPE BUTTON */
         .back-btn {
             position: absolute;
             top: 15px;
             left: 15px;
-            color: #ccc;
+            color: #666;
             text-decoration: none;
-            font-size: 0.65rem;
-            border: 2px solid #444;
-            padding: 8px 12px;
-            z-index: 1000;
-            background-color: #000;
-            /* Solid background */
-            font-family: 'Press Start 2P', cursive;
-            transition: 0.2s;
+            font-size: 0.6rem;
+            border: 1px solid #444;
+            padding: 5px 8px;
+            z-index: 600;
         }
 
-        .back-btn:hover {
-            color: #fff;
-            border-color: #fff;
-        }
-
+        /* --- FIXED LORE TEXT BOX --- */
         .lore-text {
             font-size: 0.7rem;
             color: #ccc;
-            line-height: 1.8;
+            line-height: 1.6;
+            width: 85%;
+            /* Responsive width */
             max-width: 400px;
             text-align: left;
             border: 1px solid #444;
-            padding: 20px;
+            padding: 15px;
             margin-bottom: 20px;
+            /* Scrollable if too long on mobile */
+            max-height: 50vh;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.8);
         }
 
         .boss-header {
@@ -344,8 +340,8 @@
 
     <div id="start-screen" class="overlay-screen">
         <img src="phase1.gif" class="start-boss-preview" onerror="this.src='boss_default.png'; this.onerror=null;">
-        <h1 style="color:#b026ff; margin-bottom:10px; font-size: 1rem;">THE SPINE OF HEAVEN</h1>
-        <p style="color:#888; font-size: 0.6rem; margin-bottom: 20px;">Your "spine" aches...</p>
+        <h1 style="color:#b026ff; margin-bottom:10px; font-size: 1rem;">SPINE OF HEAVEN</h1>
+        <p style="color:#888; font-size: 0.6rem; margin-bottom: 20px;">ABSOLUTE RULER OF DISTANCE</p>
 
         <div style="display:flex; gap:10px; align-items:center;">
             <button class="btn-action" onclick="startGame()">[ INITIATE ]</button>
@@ -359,20 +355,21 @@
             SUBJECT: Spine of Heaven<br>
             TYPE: Celestial Construct<br><br>
             "Before life existed, ancient Signals echoed through the void.
-            From them rose a single shaped vessel — now called the Spine of Heaven.
-            
-            Its glowing vertical “spine” is a cosmic tether, linking it to a distant mind. Each pulse down that line bends its form
-            and forces it to act out commands older than creation.
-            
-            The hollow in its chest is an aperture, not a wound — a window for something watching from beyond.
-            
+            From them rose a single shaped vessel — now called the Spine of Heaven.<br><br>
+
+            Its glowing vertical “spine” is a cosmic tether, linking it to a distant mind. Each pulse down that line
+            bends its form
+            and forces it to act out commands older than creation.<br><br>
+
+            The hollow in its chest is an aperture, not a wound — a window for something watching from beyond.<br><br>
+
             The Spine of Heaven does not think or choose.
-            It only obeys:
-            
-            “Open the path. Prepare the mind.”
-            
-            Those who fail to stop it are not killed — they are rewritten into the next Signal.
-            
+            It only obeys:<br><br>
+
+            “Open the path. Prepare the mind.”<br><br>
+
+            Those who fail to stop it are not killed — they are rewritten into the next Signal.<br><br>
+
             It is neither alive nor dead.
             Only a forgotten conduit, still carrying out a command the universe has long abandoned."
         </div>
@@ -395,7 +392,7 @@
 
     <div class="ui-top">
         <div class="boss-header">
-            <span style="font-size:0.7rem; color:#b026ff;">THE SPINE OF HEAVEN</span>
+            <span style="font-size:0.7rem; color:#b026ff;">SPINE OF HEAVEN</span>
             <div class="lore-btn" onclick="openLore()">?</div>
         </div>
 
@@ -436,41 +433,33 @@
         const ctx = canvas.getContext('2d');
         const bossEntity = document.getElementById('boss-entity');
 
-        // Logical Resolution (Game Logic Coordinates)
+        // Logical Resolution
         const LOGIC_W = 360;
         const LOGIC_H = 360;
-        let scaleFactor = 1; // Maps visual pixels to logic pixels
+        let scaleFactor = 1;
 
         function resizeLayout() {
-            // Calculate max available size
             const maxW = window.innerWidth * 0.95;
-            // Reserve space for UI (Approx 160px for top/bottom combined)
             const maxH = window.innerHeight - 180;
+            const size = Math.min(maxW, maxH, 360);
 
-            const size = Math.min(maxW, maxH, 360); // Cap at 360px
-
-            // Set Stage Size
             stage.style.width = size + 'px';
             stage.style.height = size + 'px';
 
-            // Set Canvas Resolution (Cap DPI for performance)
             const dpr = Math.min(window.devicePixelRatio || 1, 2);
             canvas.width = size * dpr;
             canvas.height = size * dpr;
 
-            // Set Visual Scale factor for Input Mapping
             scaleFactor = LOGIC_W / size;
 
-            // Scale Context to match Logic Coordinates
-            ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
             ctx.scale((size * dpr) / LOGIC_W, (size * dpr) / LOGIC_H);
             ctx.imageSmoothingEnabled = false;
         }
         window.addEventListener('resize', resizeLayout);
 
-        // Game Config
         const PLAYER_MAX_HP = 301;
-        const BOSS_MAX_HP = 8000;
+        const BOSS_MAX_HP = 7500;
 
         let state = {
             hp: PLAYER_MAX_HP, bossHp: BOSS_MAX_HP,
@@ -518,7 +507,6 @@
             state.boss.x = (LOGIC_W / 2 - 50) + Math.cos(t * 0.01) * 30;
             state.boss.y = 30 + Math.sin(t * 0.03) * 10;
 
-            // Map Logic Pos -> Visual CSS Pos
             const visualX = (state.boss.x / LOGIC_W) * 100;
             const visualY = (state.boss.y / LOGIC_H) * 100;
             const visualW = (state.boss.w / LOGIC_W) * 100;
@@ -529,13 +517,13 @@
             bossEntity.style.top = visualY + '%';
         }
 
-        /* --- ATTACK ENGINE (30+ VARIANTS) --- */
+        /* --- ATTACK ENGINE --- */
         function runAttacks() {
             const t = state.frame;
             const diff = state.phase === 2 ? 1.5 : 1.0;
 
             if (t % 120 === 0) {
-                state.attackMode = Math.floor(Math.random() * 20); // 20 Base Modes
+                state.attackMode = Math.floor(Math.random() * 20);
                 state.mutation = Math.random();
             }
             const mode = state.attackMode;
@@ -548,30 +536,39 @@
                 bossEntity.onerror = function () { this.src = "boss_phase2.png"; };
             }
 
-            /* --- ATTACK LIBRARY --- */
+            // 0: Rain
             if (mode === 0 && t % 10 === 0) {
                 let vx = (mut > 0.5) ? 2 : 0;
                 spawnB(Math.random() * LOGIC_W, -10, vx, 4 * diff, 'white', 4);
             }
+            // 1: Aimed
             if (mode === 1 && t % 25 === 0) aimAtPlayer(state.boss.x + 50, state.boss.y + 50, 6 * diff, 'red');
+            // 2: Walls
             if (mode === 2 && t % 50 === 0) {
                 if (mut > 0.5) spawnB(-10, Math.random() * LOGIC_H, 4 * diff, 0, 'cyan', 10);
                 else spawnB(Math.random() * LOGIC_W, -10, 0, 4 * diff, 'cyan', 10);
             }
+            // 3: Spiral
             if (mode === 3 && t % 4 === 0) {
                 let speed = (mut > 0.5) ? 0.2 : 0.1;
                 let a = t * speed;
                 spawnB(state.boss.x + 50, state.boss.y + 50, Math.cos(a) * 4, Math.sin(a) * 4, 'purple', 6);
             }
+            // 4: Beam
             if (mode === 4 && t % 100 === 0) spawnBeam();
+            // 5: Chaos
             if (mode === 5 && t % 5 === 0) spawnB(Math.random() * LOGIC_W, -10, (Math.random() - 0.5) * 5, 5 * diff, '#888', 3);
+            // 6: Gravity
             if (mode === 6) {
                 let dx = (state.boss.x + 50) - state.player.x; let dy = (state.boss.y + 50) - state.player.y;
                 state.player.x += dx * 0.005; state.player.y += dy * 0.005;
                 if (t % 15 === 0) spawnB(Math.random() * LOGIC_W, -10, 0, 4, 'orange', 5);
             }
+            // 7: Homing
             if (mode === 7 && t % 35 === 0) spawnB(state.boss.x, state.boss.y, 0, 2, '#b026ff', 6, true);
+            // 8: World Cleaver
             if (mode === 8 && t % 60 === 0) { spawnBeam(true); setTimeout(() => spawnBeam(false), 400); }
+            // 9: Nova
             if (mode === 9 && t % 70 === 0) {
                 let count = (mut > 0.5) ? 12 : 20;
                 for (let i = 0; i < count; i++) {
@@ -579,27 +576,34 @@
                     spawnB(state.boss.x + 50, state.boss.y + 50, Math.cos(a) * 5, Math.sin(a) * 5, 'cyan', 8);
                 }
             }
+            // 10: Void Vortex
             if (mode === 10 && t % 3 === 0) {
                 let cx = LOGIC_W / 2; let cy = LOGIC_H / 2; let a = t * 0.15;
                 spawnB(cx, cy, Math.cos(a) * 4, Math.sin(a) * 4, 'red', 5);
                 spawnB(cx, cy, Math.cos(a + Math.PI) * 4, Math.sin(a + Math.PI) * 4, 'red', 5);
             }
+            // 11: DNA
             if (mode === 11 && t % 5 === 0) {
                 let x = LOGIC_W / 2;
                 spawnB(x + Math.sin(t * 0.1) * 60, -10, 0, 5, 'lime', 6);
                 spawnB(x - Math.sin(t * 0.1) * 60, -10, 0, 5, 'lime', 6);
             }
+            // 12: Checkerboard
             if (mode === 12 && t % 70 === 0) {
                 let offset = (mut > 0.5) ? 0 : 30;
                 for (let x = 20; x < LOGIC_W; x += 60) for (let y = 20; y < LOGIC_H; y += 60) spawnB(x + offset, y + offset, 0, 0, 'white', 4);
             }
+            // 13: Orbitals
             if (mode === 13 && t % 60 === 0) {
                 for (let i = 0; i < 8; i++) {
                     let a = (Math.PI * 2 / 8) * i;
                     spawnB(LOGIC_W / 2 + Math.cos(a) * 200, LOGIC_H / 2 + Math.sin(a) * 200, -Math.cos(a) * 3, -Math.sin(a) * 3, 'orange', 8);
                 }
             }
-            if (mode >= 14 && t % 8 === 0) spawnB(Math.random() * LOGIC_W, Math.random() * LOGIC_H / 2, (Math.random() - 0.5) * 6, (Math.random() - 0.5) * 6, 'pink', 5);
+            // 14: Scatter
+            if (mode >= 14 && t % 8 === 0) {
+                spawnB(Math.random() * LOGIC_W, Math.random() * LOGIC_H / 2, (Math.random() - 0.5) * 6, (Math.random() - 0.5) * 6, 'pink', 5);
+            }
         }
 
         /* --- SPAWNERS --- */
