@@ -17,14 +17,11 @@
             --text-main: #4a4a4a;
             --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
             --sick-accent: #6366f1;
-
             /* Bubbles & Particles */
             --bubble-gradient: radial-gradient(circle at 30% 30%, #ffdff0, #db2777);
             --popped-color: #fce7f3;
             --particle-icon: '❤️';
             --card-border: rgba(255, 255, 255, 0.5);
-
-            /* Message Box Specific Text Color (Defaults to dark grey) */
             --msg-text: #4a4a4a;
         }
 
@@ -35,58 +32,47 @@
             --bg-color: #120a18;
             --card-bg: #1e1e24;
             --primary: #ff521a;
-            /* Pumpkin Orange */
             --secondary: #4a148c;
             --text-main: #e0e0e0;
             --shadow: 0 10px 20px -3px rgba(0, 0, 0, 0.9);
             --sick-accent: #d32f2f;
-            /* Blood Red */
             --bubble-gradient: radial-gradient(circle at 30% 30%, #ff8a50, #d32f2f);
             --popped-color: #2a0a0a;
             --particle-icon: '🦇';
             --card-border: rgba(255, 255, 255, 0.1);
-
-            /* Text Color Fix: Orange */
             --msg-text: #ff521a;
         }
 
+        /* --- RETURN BUTTON (FIXED FOR MOBILE) --- */
         .return-btn {
-        position: fixed; /* Stays in corner even if she scrolls */
-        top: 25px;
-        left: 25px;
-        z-index: 1000;
-        
-        /* The Look */
-        background: rgba(255, 255, 255, 0.9); /* White/Soft background */
-        color: #000; /* Dark text */
-        border: 2px solid #000;
-        border-radius: 50px; /* Pill shape */
-        padding: 12px 24px;
-        
-        /* Typography */
-        font-family: 'Courier Prime', 'Courier New', monospace;
-        font-weight: bold;
-        font-size: 0.9rem;
-        text-decoration: none; /* Removes underline */
-        
-        /* The Animation Setup */
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+            border: 2px solid #000;
+            border-radius: 50px;
+            padding: 12px 24px;
+            font-family: 'Courier Prime', 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    /* HOVER STATE: Turns into the "Dark Mode" aesthetic */
         .return-btn:hover {
             background: #000;
-            color: #00f3ff; /* Cyan Neon */
+            color: #00f3ff;
             border-color: #00f3ff;
             box-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
-            transform: translateY(-2px); /* Floats up slightly */
+            transform: translateY(-2px);
         }
-    
-        /* CLICK STATE: Presses down */
+
         .return-btn:active {
             transform: translateY(1px) scale(0.98);
             box-shadow: 0 0 5px rgba(0, 243, 255, 0.4);
@@ -97,29 +83,33 @@
             line-height: 1;
         }
 
+        /* MOBILE FIX: Smaller button that doesn't block the screen */
+        @media (max-width: 600px) {
+            .return-btn {
+                top: 15px;
+                left: 15px;
+                padding: 8px 12px;
+                font-size: 0.75rem;
+                background: rgba(255, 255, 255, 0.95);
+            }
+        }
+
         /* --- ZELDA MODE --- */
         body.theme-zelda {
             --bg-color: #2c3e50;
-            /* Dark Slate Blue */
             --card-bg: #f5e6c8;
-            /* Light Parchment */
             --primary: #8d6e63;
-            /* Leather Brown */
             --secondary: #fde047;
             --text-main: #3e2723;
-            /* Dark Brown (For Cards) */
             --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
             --sick-accent: #c0392b;
             --bubble-gradient: radial-gradient(circle at 30% 30%, #81f79f, #2ecc71);
             --popped-color: #d7ccc8;
             --particle-icon: '🔺';
             --card-border: #8d6e63;
-
-            /* Text Color Fix: Light Parchment */
             --msg-text: #f5e6c8;
         }
 
-        /* Header text override for Zelda mode */
         body.theme-zelda header h1,
         body.theme-zelda header p.subtitle {
             color: #f5e6c8 !important;
@@ -138,8 +128,6 @@
             --popped-color: #064e3b;
             --particle-icon: '💨';
             --card-border: rgba(74, 222, 128, 0.2);
-
-            /* Text Color Fix: Neon Green */
             --msg-text: #4ade80;
         }
 
@@ -150,6 +138,8 @@
             color: var(--text-main);
             margin: 0;
             padding: 20px;
+            /* Extra padding top so the button doesn't cover content */
+            padding-top: 80px; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -206,7 +196,7 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* --- DECOR: ZELDA FAIRIES & SHIELD --- */
+        /* --- DECOR --- */
         .zelda-shield {
             display: none;
             width: 60px;
@@ -221,527 +211,187 @@
         }
 
         @keyframes floatShield {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
-        /* The Navi Fairies */
         .fairy-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             opacity: 0;
             transition: opacity 1s;
             z-index: 1;
         }
 
-        body.theme-zelda .fairy-container {
-            opacity: 1;
-        }
+        body.theme-zelda .fairy-container { opacity: 1; }
 
         .fairy {
             position: absolute;
-            width: 12px;
-            height: 12px;
-            background: #fff;
-            border-radius: 50%;
+            width: 12px; height: 12px;
+            background: #fff; border-radius: 50%;
             box-shadow: 0 0 10px #fff, 0 0 20px var(--primary), 0 0 30px var(--secondary);
             animation: flyAround 15s infinite linear;
         }
 
-        .fairy::before,
-        .fairy::after {
-            content: '';
-            position: absolute;
-            top: -5px;
-            width: 14px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
+        .fairy::before, .fairy::after {
+            content: ''; position: absolute; top: -5px; width: 14px; height: 20px;
+            background: rgba(255, 255, 255, 0.6); border-radius: 50%;
             animation: flutter 0.1s infinite alternate;
         }
 
-        .fairy::before {
-            left: -10px;
-            transform: rotate(-20deg);
-        }
+        .fairy::before { left: -10px; transform: rotate(-20deg); }
+        .fairy::after { right: -10px; transform: rotate(20deg); }
+        .fairy:nth-child(1) { top: 20%; left: 10%; animation-duration: 12s; }
+        .fairy:nth-child(2) { top: 70%; right: 10%; animation-duration: 18s; animation-delay: -5s; --primary: #00ffff; }
 
-        .fairy::after {
-            right: -10px;
-            transform: rotate(20deg);
-        }
-
-        .fairy:nth-child(1) {
-            top: 20%;
-            left: 10%;
-            animation-duration: 12s;
-        }
-
-        .fairy:nth-child(2) {
-            top: 70%;
-            right: 10%;
-            animation-duration: 18s;
-            animation-delay: -5s;
-            --primary: #00ffff;
-        }
-
-        @keyframes flutter {
-            from {
-                transform: scaleX(1);
-            }
-
-            to {
-                transform: scaleX(0.5);
-            }
-        }
-
+        @keyframes flutter { from { transform: scaleX(1); } to { transform: scaleX(0.5); } }
         @keyframes flyAround {
-            0% {
-                transform: translate(0, 0);
-            }
-
-            25% {
-                transform: translate(50px, -50px);
-            }
-
-            50% {
-                transform: translate(0, -100px);
-            }
-
-            75% {
-                transform: translate(-50px, -50px);
-            }
-
-            100% {
-                transform: translate(0, 0);
-            }
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(50px, -50px); }
+            50% { transform: translate(0, -100px); }
+            75% { transform: translate(-50px, -50px); }
+            100% { transform: translate(0, 0); }
         }
 
-        /* --- DECOR: CANDLES (Goth) --- */
         .decor-container {
-            position: absolute;
-            top: 0;
-            height: 100px;
-            width: 60px;
-            opacity: 0;
-            transition: opacity 1s ease;
-            pointer-events: none;
+            position: absolute; top: 0; height: 100px; width: 60px;
+            opacity: 0; transition: opacity 1s ease; pointer-events: none;
         }
+        .decor-left { left: -30px; }
+        .decor-right { right: -30px; }
 
-        .decor-left {
-            left: -30px;
-        }
-
-        .decor-right {
-            right: -30px;
-        }
-
-        body.theme-goth .decor-container.candle-mode {
-            opacity: 1;
-        }
-
-        body.theme-weed .decor-container.smoke-mode {
-            opacity: 1;
-        }
+        body.theme-goth .decor-container.candle-mode { opacity: 1; }
+        body.theme-weed .decor-container.smoke-mode { opacity: 1; }
 
         .candle-art {
-            position: absolute;
-            bottom: 0;
-            width: 15px;
-            height: 35px;
+            position: absolute; bottom: 0; width: 15px; height: 35px;
             background: linear-gradient(to right, #e0c097, #bfa07a);
-            border-radius: 3px;
-            box-shadow: 20px 10px 0 #e0c097, -18px 15px 0 #bfa07a;
-            left: 20px;
+            border-radius: 3px; box-shadow: 20px 10px 0 #e0c097, -18px 15px 0 #bfa07a; left: 20px;
         }
-
-        .candle-art::before,
-        .candle-art::after {
-            content: '';
-            position: absolute;
-            width: 8px;
-            height: 12px;
+        .candle-art::before, .candle-art::after {
+            content: ''; position: absolute; width: 8px; height: 12px;
             background: radial-gradient(ellipse at bottom, #ffdb3b, #ff521a);
-            border-radius: 50% 50% 35% 35%;
-            top: -12px;
-            left: 4px;
-            animation: flicker 0.1s infinite alternate;
+            border-radius: 50% 50% 35% 35%; top: -12px; left: 4px; animation: flicker 0.1s infinite alternate;
         }
+        .candle-art::after { top: -2px; left: 24px; animation-delay: 0.05s; }
+        @keyframes flicker { from { transform: scale(1); opacity: 0.9; } to { transform: scale(1.1, 0.9); opacity: 1; } }
 
-        .candle-art::after {
-            top: -2px;
-            left: 24px;
-            animation-delay: 0.05s;
-        }
-
-        @keyframes flicker {
-            from {
-                transform: scale(1);
-                opacity: 0.9;
-            }
-
-            to {
-                transform: scale(1.1, 0.9);
-                opacity: 1;
-            }
-        }
-
-        /* --- DECOR: CIGARETTES/JOINTS (Weed) --- */
         .cig-art {
-            position: absolute;
-            bottom: 10px;
-            left: 20px;
-            width: 8px;
-            height: 50px;
-            background: linear-gradient(to right, #f5f5f5, #e0e0e0);
-            border-radius: 2px;
-            transform-origin: bottom center;
-            transform: rotate(-10deg);
+            position: absolute; bottom: 10px; left: 20px; width: 8px; height: 50px;
+            background: linear-gradient(to right, #f5f5f5, #e0e0e0); border-radius: 2px;
+            transform-origin: bottom center; transform: rotate(-10deg);
         }
-
         .cig-art::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: radial-gradient(circle, #ff5e00, #ff0000);
-            border-radius: 2px 2px 0 0;
-            box-shadow: 0 -2px 5px #ff5e00;
-            animation: burn 0.2s infinite alternate;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+            background: radial-gradient(circle, #ff5e00, #ff0000); border-radius: 2px 2px 0 0;
+            box-shadow: 0 -2px 5px #ff5e00; animation: burn 0.2s infinite alternate;
         }
-
         .smoke-puff {
-            position: absolute;
-            width: 20px;
-            height: 20px;
+            position: absolute; width: 20px; height: 20px;
             background: radial-gradient(circle, rgba(200, 200, 200, 0.6) 0%, transparent 70%);
-            border-radius: 50%;
-            top: -10px;
-            left: -5px;
-            animation: smokeRise 2.5s infinite;
-            filter: blur(3px);
-            opacity: 0;
+            border-radius: 50%; top: -10px; left: -5px;
+            animation: smokeRise 2.5s infinite; filter: blur(3px); opacity: 0;
         }
+        .smoke-puff:nth-child(2) { animation-delay: 0.8s; width: 25px; height: 25px; }
+        .smoke-puff:nth-child(3) { animation-delay: 1.6s; width: 15px; height: 15px; }
 
-        .smoke-puff:nth-child(2) {
-            animation-delay: 0.8s;
-            width: 25px;
-            height: 25px;
-        }
-
-        .smoke-puff:nth-child(3) {
-            animation-delay: 1.6s;
-            width: 15px;
-            height: 15px;
-        }
-
-        @keyframes burn {
-            from {
-                opacity: 0.8;
-            }
-
-            to {
-                opacity: 1;
-                box-shadow: 0 -3px 8px #ff9100;
-            }
-        }
-
+        @keyframes burn { from { opacity: 0.8; } to { opacity: 1; box-shadow: 0 -3px 8px #ff9100; } }
         @keyframes smokeRise {
-            0% {
-                transform: translateY(0) scale(0.5);
-                opacity: 0.5;
-            }
-
-            100% {
-                transform: translateY(-60px) scale(2.5);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) scale(0.5); opacity: 0.5; }
+            100% { transform: translateY(-60px) scale(2.5); opacity: 0; }
         }
 
         /* --- GENERAL UI --- */
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding-top: 10px;
-        }
+        header { text-align: center; margin-bottom: 20px; padding-top: 10px; }
 
         .recovery-badge {
-            background-color: var(--sick-accent);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            animation: pulse 2s infinite;
-            transition: background-color 0.5s ease;
+            background-color: var(--sick-accent); color: white; padding: 5px 15px;
+            border-radius: 50px; font-size: 0.8rem; font-weight: bold; display: inline-block;
+            margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite; transition: background-color 0.5s ease;
         }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        h1 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin: 5px 0;
-            transition: color 0.5s ease;
-        }
-
-        p.subtitle {
-            font-size: 0.9rem;
-            color: var(--text-main);
-            opacity: 0.7;
-            margin-top: 0;
-        }
+        h1 { color: var(--primary); font-size: 1.8rem; margin: 5px 0; transition: color 0.5s ease; }
+        p.subtitle { font-size: 0.9rem; color: var(--text-main); opacity: 0.7; margin-top: 0; }
 
         .card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--card-border);
-            text-align: center;
+            background: var(--card-bg); border-radius: 20px; padding: 25px; margin-bottom: 20px;
+            box-shadow: var(--shadow); border: 1px solid var(--card-border); text-align: center;
             transition: background-color 0.5s ease, box-shadow 0.5s ease, border 0.5s ease;
         }
-
-        .card h2 {
-            font-size: 1.3rem;
-            margin-top: 0;
-            color: var(--primary);
-            margin-bottom: 15px;
-            transition: color 0.5s ease;
-        }
+        .card h2 { font-size: 1.3rem; margin-top: 0; color: var(--primary); margin-bottom: 15px; transition: color 0.5s ease; }
 
         #message-box {
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--msg-text);
-            /* Theme specific color */
-            margin-bottom: 20px;
-            font-style: italic;
-            padding: 10px;
-            background: var(--bg-color);
-            border-radius: 15px;
-            transition: all 0.3s ease;
-            border: 1px solid var(--card-border);
+            min-height: 80px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; font-weight: bold; color: var(--msg-text);
+            margin-bottom: 20px; font-style: italic; padding: 10px; background: var(--bg-color);
+            border-radius: 15px; transition: all 0.3s ease; border: 1px solid var(--card-border);
         }
 
         .btn-main {
-            display: block;
-            width: 100%;
-            padding: 18px;
-            background-color: var(--primary);
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border: none;
-            border-radius: 15px;
-            font-weight: 700;
-            font-size: 1rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            cursor: pointer;
+            display: block; width: 100%; padding: 18px; background-color: var(--primary);
+            color: white; text-align: center; text-decoration: none; border: none;
+            border-radius: 15px; font-weight: 700; font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); transition: all 0.3s ease; cursor: pointer;
         }
-
-        body.theme-zelda .btn-main {
-            color: white;
-        }
-
-        body.theme-weed .btn-main {
-            color: #022c22;
-        }
-
-        .btn-main:active {
-            transform: scale(0.96);
-        }
+        body.theme-zelda .btn-main { color: white; }
+        body.theme-weed .btn-main { color: #022c22; }
+        .btn-main:active { transform: scale(0.96); }
 
         .btn-secondary {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin-top: 15px;
-            background-color: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            border-radius: 15px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            display: block; width: 100%; padding: 12px; margin-top: 15px;
+            background-color: transparent; color: var(--primary);
+            border: 2px solid var(--primary); border-radius: 15px;
+            font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease;
         }
+        .btn-secondary:active { background-color: var(--secondary); transform: scale(0.98); }
 
-        .btn-secondary:active {
-            background-color: var(--secondary);
-            transform: scale(0.98);
-        }
-
-        /* ================= 4. BUBBLES ================= */
-        .bubble-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-            margin-top: 15px;
-            padding: 5px;
-        }
-
+        .bubble-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 15px; padding: 5px; }
         .bubble {
-            width: 100%;
-            padding-bottom: 100%;
-            background: var(--bubble-gradient);
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
-            position: relative;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
+            width: 100%; padding-bottom: 100%; background: var(--bubble-gradient);
+            border-radius: 50%; cursor: pointer; box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+            position: relative; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden;
         }
-
-        /* Goth Pumpkin */
         body.theme-goth .bubble {
             border-radius: 40% 40% 50% 50%;
-            background-image:
-                repeating-linear-gradient(90deg, transparent, transparent 15%, rgba(0, 0, 0, 0.15) 15%, rgba(0, 0, 0, 0.15) 17%),
-                radial-gradient(circle at 30% 30%, #ff8a50, #d32f2f);
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 15%, rgba(0, 0, 0, 0.15) 15%, rgba(0, 0, 0, 0.15) 17%), radial-gradient(circle at 30% 30%, #ff8a50, #d32f2f);
         }
-
-        body.theme-goth .bubble::before {
-            content: '';
-            position: absolute;
-            top: -12%;
-            left: 42%;
-            width: 16%;
-            height: 15%;
-            background: #4a2c2a;
-            border-radius: 4px 4px 0 0;
-        }
-
-        /* Zelda Rupee */
+        body.theme-goth .bubble::before { content: ''; position: absolute; top: -12%; left: 42%; width: 16%; height: 15%; background: #4a2c2a; border-radius: 4px 4px 0 0; }
         body.theme-zelda .bubble {
-            border-radius: 0;
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            border-radius: 0; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
             background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, transparent 50%);
             filter: drop-shadow(0 4px 2px rgba(0, 0, 0, 0.4));
         }
-
-        /* Weed Leaf */
-        body.theme-weed .bubble {
-            border-radius: 0 50% 50% 50%;
-            transform: rotate(45deg);
-            margin: 2px;
-            box-shadow: none;
-            filter: drop-shadow(0 4px 2px rgba(0, 0, 0, 0.5));
-        }
+        body.theme-weed .bubble { border-radius: 0 50% 50% 50%; transform: rotate(45deg); margin: 2px; box-shadow: none; filter: drop-shadow(0 4px 2px rgba(0, 0, 0, 0.5)); }
 
         .bubble.popped {
-            background: var(--popped-color) !important;
-            box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.3);
-            transform: scale(0.8) !important;
-            opacity: 0.6;
-            background-image: none !important;
-            clip-path: none !important;
-            border-radius: 50% !important;
-            filter: none !important;
+            background: var(--popped-color) !important; box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.3);
+            transform: scale(0.8) !important; opacity: 0.6; background-image: none !important;
+            clip-path: none !important; border-radius: 50% !important; filter: none !important;
         }
+        body.theme-goth .bubble.popped { box-shadow: inset 0 0 15px var(--primary); }
+        body.theme-goth .bubble.popped::before { display: none; }
 
-        body.theme-goth .bubble.popped {
-            box-shadow: inset 0 0 15px var(--primary);
-        }
-
-        body.theme-goth .bubble.popped::before {
-            display: none;
-        }
-
-        /* ================= 5. EXTRAS ================= */
-        .status-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         .status-btn {
-            padding: 15px 10px;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 0.9rem;
-            font-weight: bold;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid transparent;
-            transition: 0.2s;
-            color: var(--text-main);
-            background: var(--bg-color);
-            border: 1px solid var(--card-border);
+            padding: 15px 10px; border-radius: 12px; text-align: center;
+            font-size: 0.9rem; font-weight: bold; text-decoration: none;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border: 2px solid transparent; transition: 0.2s; color: var(--text-main);
+            background: var(--bg-color); border: 1px solid var(--card-border);
         }
+        .status-discord { color: #5865F2; }
+        .status-btn:active { transform: scale(0.98); }
 
-        .status-discord {
-            color: #5865F2;
-        }
-
-        .status-btn:active {
-            transform: scale(0.98);
-        }
-
-        .note {
-            font-size: 0.8rem;
-            text-align: center;
-            color: var(--text-main);
-            opacity: 0.6;
-            margin-top: 30px;
-        }
+        .note { font-size: 0.8rem; text-align: center; color: var(--text-main); opacity: 0.6; margin-top: 30px; }
 
         .heart-particle {
-            position: absolute;
-            pointer-events: none;
-            animation: floatUp 1s ease-out forwards;
-            font-size: 1.2rem;
-            z-index: 99;
+            position: absolute; pointer-events: none; animation: floatUp 1s ease-out forwards;
+            font-size: 1.2rem; z-index: 99;
         }
-
-        @keyframes floatUp {
-            0% {
-                transform: translateY(0) rotate(0deg) scale(1);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateY(-50px) rotate(20deg) scale(1.5);
-                opacity: 0;
-            }
-        }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 100% { transform: translateY(-50px) rotate(20deg) scale(1.5); opacity: 0; } }
     </style>
 </head>
 
@@ -901,7 +551,6 @@
 
         /* ----- 3. STATE ----- */
         let currentTheme = 'healing';
-        // Start at -1 so the first load (init) makes it 0 (Pink)
         let defaultPaletteIndex = -1;
 
         function setTheme(theme) {
@@ -958,7 +607,6 @@
                 const p = defaultPalettes[defaultPaletteIndex];
                 grad = p.grad; pop = p.pop;
             } else if (currentTheme === 'goth') {
-                // Force orange for pumpkins, stripes handled by CSS class
                 grad = 'radial-gradient(circle at 30% 30%, #ff8a50, #d32f2f)'; pop = '#2a0a0a';
             } else if (currentTheme === 'weed') {
                 grad = 'radial-gradient(circle at 30% 30%, #86efac, #22c55e)'; pop = '#065f46';
@@ -976,7 +624,7 @@
                 if (currentTheme === 'zelda') {
                     bubble.style.background = rupees[Math.floor(Math.random() * rupees.length)];
                 } else if (currentTheme !== 'goth') {
-                    bubble.style.background = ''; // reset for others, Goth uses CSS layering
+                    bubble.style.background = '';
                 }
 
                 bubble.onclick = function () {
@@ -1009,7 +657,4 @@
         generateBubbles();
     </script>
 </body>
-
-
 </html>
-
