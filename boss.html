@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BOSS: รρเɳε σƒ ɦεαѵεɳ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        /* --- CORE --- */
+        body {
+            background-color: #000;
+            color: white;
+            font-family: 'Press Start 2P', cursive;
+            margin: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            touch-action: none;
+            user-select: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- UI LAYERS --- */
+        .ui-top,
+        .ui-bottom {
+            width: 90%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .ui-top {
+            margin-bottom: 10px;
+        }
+
+        .ui-bottom {
+            margin-top: 10px;
+        }
+
+        .lore-btn,
+        .item-btn,
+        .back-btn,
+        .btn-action {
+            pointer-events: auto;
+        }
+
+        /* Boss HP Bar */
+        .boss-hp-track {
+            width: 100%;
+            height: 20px;
+            background: #333;
+            border: 2px solid white;
+            margin-top: 5px;
+            position: relative;
+        }
+
+        .boss-hp-fill {
+            width: 100%;
+            height: 100%;
+            background: #b026ff;
+            transition: width 0.2s;
+            will-change: width;
+        }
+
+        /* Player Stats */
+        .player-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            font-size: 0.7rem;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        .hp-bar-container {
+            width: 100%;
+            height: 15px;
+            background: #4a0000;
+            border: 2px solid white;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .hp-bar-fill {
+            height: 100%;
+            background: #ffff00;
+            width: 100%;
+            transition: width 0.1s;
+            will-change: width;
+        }
+
+        /* DAMAGE SHAKE */
+        .shake-hard {
+            animation: shake 0.3s cubic-bezier(.36, .07, .19, .97) both;
+        }
+
+        @keyframes shake {
+
+            10%,
+            90% {
+                transform: translate3d(-2px, 0, 0);
+            }
+
+            20%,
+            80% {
+                transform: translate3d(4px, 0, 0);
+            }
+
+            30%,
+            50%,
+            70% {
+                transform: translate3d(-6px, 0, 0);
+            }
+
+            40%,
+            60% {
+                transform: translate3d(6px, 0, 0);
+            }
+        }
+
+        /* --- GAME STAGE --- */
+        #game-stage {
+            position: relative;
+            width: 360px;
+            height: 360px;
+            max-width: 90vw;
+            max-height: 90vw;
+            box-shadow: 0 0 20px rgba(176, 38, 255, 0.1);
+            border: 4px solid white;
+            background: #000;
+            overflow: hidden;
+            cursor: crosshair;
+            transform: translateZ(0);
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* BOSS SPRITE */
+        #boss-entity {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            z-index: 2;
+            object-fit: contain;
+            image-rendering: pixelated;
+            will-change: transform;
+            top: 0;
+            left: 0;
+            filter: drop-shadow(0 0 10px #b026ff);
+        }
+
+        /* --- DIALOGUE --- */
+        #dialogue-box {
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid white;
+            background: black;
+            padding: 15px;
+            font-size: 0.7rem;
+            line-height: 1.5;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* SCREENS */
+        .overlay-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 500;
+            text-align: center;
+        }
+
+        .btn-action {
+            font-family: inherit;
+            background: transparent;
+            color: #ffff00;
+            border: 2px solid #ffff00;
+            padding: 15px 25px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            animation: pulse 2s infinite;
+        }
+
+        .lore-btn {
+            background: #333;
+            border: 1px solid #fff;
+            color: #ffff00;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .start-boss-preview {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px #b026ff);
+            image-rendering: pixelated;
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+            pointer-events: auto;
+        }
+
+        .item-btn {
+            background: #222;
+            border: 2px solid #fff;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.7rem;
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .item-btn:disabled {
+            opacity: 0.5;
+            border-color: #555;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.6rem;
+            border: 1px solid #444;
+            padding: 5px 8px;
+            z-index: 600;
+        }
+
+        .lore-text {
+            font-size: 0.7rem;
+            color: #ccc;
+            line-height: 1.8;
+            max-width: 400px;
+            text-align: left;
+            border: 1px solid #444;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .boss-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            pointer-events: auto;
+        }
+
+        /* VICTORY TEXT */
+        .god-felled {
+            font-size: 2rem;
+            color: #ffd700;
+            text-shadow: 0 0 20px #ff0000;
+            letter-spacing: 5px;
+            margin-bottom: 30px;
+            animation: riseUp 3s ease-out;
+        }
+
+        @keyframes riseUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8);
+            }
+
+            20% {
+                opacity: 1;
+                transform: translateY(0) scale(1.2);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <a href="index.html" class="back-btn">← FLEE</a>
+
+    <div id="start-screen" class="overlay-screen">
+        <img src="phase1.gif" class="start-boss-preview" onerror="this.src='boss_default.png'; this.onerror=null;">
+        <h1 style="color:#b026ff; margin-bottom:10px; font-size: 1.2rem;">SPINE OF HEAVEN</h1>
+        <p style="color:#888; font-size: 0.6rem; margin-bottom: 20px;">ABSOLUTE RULER OF DISTANCE</p>
+
+        <div style="display:flex; gap:10px; align-items:center;">
+            <button class="btn-action" onclick="startGame()">[ INITIATE ]</button>
+            <div class="lore-btn" style="margin-top:20px; width:40px; height:40px;" onclick="openLore()">?</div>
+        </div>
+    </div>
+
+    <div id="lore-screen" class="overlay-screen" style="display:none;">
+        <h2 style="color:#ffff00; margin-bottom:20px;">ENTITY DATA</h2>
+        <div class="lore-text">
+            SUBJECT: Spine of Heaven<br>
+            TYPE: Celestial Construct<br><br>
+            "A being formed from the impossible space between two points. It claims that distance is the only truth.
+            Prove it wrong."
+        </div>
+        <button class="btn-action" onclick="closeLore()" style="border-color:#fff; color:#fff;">[ RESUME ]</button>
+    </div>
+
+    <div id="game-over-screen" class="overlay-screen" style="display:none;">
+        <h1 style="color:red; margin-bottom:10px;">SIGNAL LOST</h1>
+        <button class="btn-action" onclick="location.reload()">[ REFUSE TO GIVE UP ]</button>
+    </div>
+
+    <div id="victory-screen" class="overlay-screen" style="display:none; background: rgba(0,0,0,0.8);">
+        <div class="god-felled">GOD FELLED</div>
+        <div style="color: #ccc; font-size: 0.7rem; margin-bottom: 20px;">The heavens have opened.</div>
+        <button class="btn-action" onclick="location.reload()">[ GIVE CHASE ]</button>
+        <a href="index.html" class="btn-action"
+            style="margin-top:10px; border-color:#b026ff; color:#b026ff; text-decoration:none; display:inline-block;">[
+            RETURN TO HUB ]</a>
+    </div>
+
+    <div class="ui-top">
+        <div class="boss-header">
+            <span style="font-size:0.8rem; color:#b026ff;">SPINE OF HEAVEN</span>
+            <div class="lore-btn" onclick="openLore()">?</div>
+        </div>
+
+        <div class="boss-hp-track">
+            <div id="boss-hp-bar" class="boss-hp-fill"></div>
+        </div>
+    </div>
+
+    <div id="game-stage">
+        <img id="boss-entity" src="phase1.gif" onerror="this.src='boss_default.png'; this.onerror=null;">
+        <canvas id="game-canvas" width="360" height="360"></canvas>
+    </div>
+
+    <div class="ui-bottom" id="player-ui">
+        <div class="player-stats">
+            <span>LV 69 Lou</span>
+            <span>HP <span style="color:#ffff00" id="hp-text">201 / 201</span></span>
+        </div>
+        <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="player-hp-bar"></div>
+        </div>
+
+        <div class="action-bar">
+            <button class="item-btn" id="heal-btn" onclick="useItem()">
+                ☕ DEPRESSO ESPRESSO (<span id="item-count">6</span>)
+            </button>
+        </div>
+
+        <div id="dialogue-box">
+            * The Spine of Heaven descends.
+        </div>
+    </div>
+
+    <script>
+        /* --- ENGINE SETUP --- */
+        const stage = document.getElementById('game-stage');
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const bossEntity = document.getElementById('boss-entity');
+
+        const WIDTH = 360;
+        const HEIGHT = 360;
+
+        function resizeCanvas() {
+            const rect = stage.getBoundingClientRect();
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr * (rect.width / WIDTH), dpr * (rect.height / HEIGHT));
+            ctx.imageSmoothingEnabled = false;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const PLAYER_MAX_HP = 301;
+        const BOSS_MAX_HP = 7000;
+
+        let state = {
+            hp: PLAYER_MAX_HP, bossHp: BOSS_MAX_HP,
+            phase: 1, items: 3, gameActive: false, paused: false,
+            frame: 0,
+            bullets: [], pBullets: [], beams: [],
+            player: { x: WIDTH / 2, y: HEIGHT / 2 },
+            boss: { x: WIDTH / 2 - 50, y: 30, w: 100, h: 100 },
+            touch: { active: false, x: 0, y: 0 }
+        };
+
+        const bossBar = document.getElementById('boss-hp-bar');
+        const pBar = document.getElementById('player-hp-bar');
+        const hpText = document.getElementById('hp-text');
+        const dialogue = document.getElementById('dialogue-box');
+
+        /* --- GAME LOOP --- */
+        function startGame() {
+            document.getElementById('start-screen').style.display = 'none';
+            state.gameActive = true;
+            resizeCanvas();
+            loop();
+        }
+
+        function openLore() { state.paused = true; document.getElementById('lore-screen').style.display = 'flex'; }
+        function closeLore() { document.getElementById('lore-screen').style.display = 'none'; if (state.gameActive) { state.paused = false; loop(); } }
+
+        function loop() {
+            if (!state.gameActive || state.paused) return;
+            state.frame++;
+
+            updateBossBehavior();
+            runAttacks();
+            if (state.frame % 8 === 0) spawnPlayerShot();
+            updatePhysics();
+
+            ctx.fillStyle = state.phase === 2 ? '#1a0000' : 'black';
+            ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+            drawBeams();
+            drawBullets();
+            drawPlayer();
+
+            requestAnimationFrame(loop);
+        }
+
+        /* --- BOSS VISUALS (NO ROTATION) --- */
+        function updateBossBehavior() {
+            const t = state.frame;
+            // Float Figure 8
+            state.boss.x = (WIDTH / 2 - 50) + Math.cos(t * 0.01) * 30;
+            state.boss.y = 30 + Math.sin(t * 0.03) * 10;
+            bossEntity.style.transform = `translate3d(${state.boss.x}px, ${state.boss.y}px, 0)`;
+        }
+
+        /* --- ATTACK ENGINE (25 MODES) --- */
+        function runAttacks() {
+            const t = state.frame;
+            const diff = state.phase === 2 ? 1.5 : 1.0;
+
+            // Randomly select attack mode every 120 frames (2 seconds)
+            if (t % 120 === 0) {
+                state.attackMode = Math.floor(Math.random() * 25);
+                updateDialogue(state.attackMode);
+            }
+
+            const mode = state.attackMode;
+
+            // Phase 2 Check
+            if (state.bossHp < BOSS_MAX_HP / 2 && state.phase === 1) {
+                state.phase = 2;
+                dialogue.innerText = "* THE SPINE SHATTERS!";
+                bossEntity.src = "phase2.gif";
+                bossEntity.onerror = function () { this.src = "boss_phase2.png"; };
+            }
+
+            /* --- THE ARSENAL --- */
+
+            // 0: Rain
+            if (mode === 0 && t % 10 === 0) spawnB(Math.random() * WIDTH, -10, 0, 4 * diff, 'white', 4);
+
+            // 1: Aimed
+            if (mode === 1 && t % 20 === 0) aimAtPlayer(state.boss.x + 50, state.boss.y + 50, 5 * diff, 'red');
+
+            // 2: Walls
+            if (mode === 2 && t % 40 === 0) {
+                let y = Math.random() * HEIGHT;
+                spawnB(-10, y, 4 * diff, 0, 'cyan', 8); spawnB(WIDTH + 10, y + 30, -4 * diff, 0, 'cyan', 8);
+            }
+
+            // 3: Spiral
+            if (mode === 3 && t % 4 === 0) {
+                let a = t * 0.2;
+                spawnB(state.boss.x + 50, state.boss.y + 50, Math.cos(a) * 4, Math.sin(a) * 4, 'purple', 6);
+            }
+
+            // 4: Beam
+            if (mode === 4 && t % 110 === 0) spawnBeam();
+
+            // 5: Chaos
+            if (mode === 5 && t % 5 === 0) spawnB(Math.random() * WIDTH, -10, (Math.random() - 0.5) * 4, 6 * diff, '#888', 3);
+
+            // 6: Gravity
+            if (mode === 6) {
+                let dx = (state.boss.x + 50) - state.player.x; let dy = (state.boss.y + 50) - state.player.y;
+                state.player.x += dx * 0.005; state.player.y += dy * 0.005;
+                if (t % 20 === 0) spawnB(Math.random() * WIDTH, -10, 0, 4, 'orange', 5);
+            }
+
+            // 7: Homing
+            if (mode === 7 && t % 30 === 0) spawnB(state.boss.x, state.boss.y, 0, 2, '#b026ff', 6, true);
+
+            // 8: World Cleaver
+            if (mode === 8 && t % 50 === 0) { spawnBeam(true); setTimeout(() => spawnBeam(false), 500); }
+
+            // 9: Nova Burst
+            if (mode === 9 && t % 60 === 0) {
+                for (let i = 0; i < 16; i++) {
+                    let a = (Math.PI * 2 / 16) * i;
+                    spawnB(state.boss.x + 50, state.boss.y + 50, Math.cos(a) * 5, Math.sin(a) * 5, 'cyan', 8);
+                }
+            }
+
+            // 10: Void Vortex
+            if (mode === 10 && t % 3 === 0) {
+                let cx = WIDTH / 2; let cy = HEIGHT / 2; let a = t * 0.1;
+                spawnB(cx, cy, Math.cos(a) * 3, Math.sin(a) * 3, 'red', 5);
+                spawnB(cx, cy, Math.cos(a + Math.PI) * 3, Math.sin(a + Math.PI) * 3, 'red', 5);
+            }
+
+            // 11: Heaven's Gate (Corners)
+            if (mode === 11 && t % 15 === 0) {
+                aimAtPlayer(0, 0, 4, 'yellow'); aimAtPlayer(WIDTH, 0, 4, 'yellow');
+                aimAtPlayer(0, HEIGHT, 4, 'yellow'); aimAtPlayer(WIDTH, HEIGHT, 4, 'yellow');
+            }
+
+            // 12: DNA Helix
+            if (mode === 12 && t % 5 === 0) {
+                let x = WIDTH / 2;
+                spawnB(x + Math.sin(t * 0.1) * 50, -10, 0, 5, 'lime', 6);
+                spawnB(x - Math.sin(t * 0.1) * 50, -10, 0, 5, 'lime', 6);
+            }
+
+            // 13: The Saw (Bottom sweep)
+            if (mode === 13 && t % 5 === 0) {
+                let x = (Math.sin(t * 0.05) + 1) * (WIDTH / 2);
+                spawnB(x, HEIGHT + 10, 0, -5, 'red', 12);
+            }
+
+            // 14: Checkerboard (Grid spawn)
+            if (mode === 14 && t % 60 === 0) {
+                for (let x = 20; x < WIDTH; x += 60) {
+                    for (let y = 20; y < HEIGHT; y += 60) {
+                        spawnB(x, y, 0, 0, 'white', 4); // Stationary mines
+                    }
+                }
+            }
+
+            // 15: Ring Expand
+            if (mode === 15 && t % 40 === 0) {
+                for (let i = 0; i < 10; i++) {
+                    let a = (Math.PI * 2 / 10) * i;
+                    spawnB(WIDTH / 2, HEIGHT / 2, Math.cos(a) * 2, Math.sin(a) * 2, 'blue', 8);
+                }
+            }
+
+            // 16: Scatter Shot
+            if (mode === 16 && t % 10 === 0) {
+                for (let i = 0; i < 3; i++) {
+                    spawnB(Math.random() * WIDTH, Math.random() * HEIGHT / 2, (Math.random() - 0.5) * 5, (Math.random() - 0.5) * 5, 'pink', 5);
+                }
+            }
+
+            // 17: Sine Wave Wall
+            if (mode === 17 && t % 20 === 0) {
+                for (let x = 0; x < WIDTH; x += 40) {
+                    spawnB(x, -10, 0, 3 + Math.sin(x + t) * 2, 'green', 5);
+                }
+            }
+
+            // 18: Sniper
+            if (mode === 18 && t % 40 === 0) {
+                aimAtPlayer(state.boss.x + 50, state.boss.y + 50, 12, 'white', 10); // Very fast
+            }
+
+            // 19: Orbitals
+            if (mode === 19 && t % 60 === 0) {
+                for (let i = 0; i < 8; i++) {
+                    let a = (Math.PI * 2 / 8) * i;
+                    let sx = WIDTH / 2 + Math.cos(a) * 200; let sy = HEIGHT / 2 + Math.sin(a) * 200;
+                    spawnB(sx, sy, -Math.cos(a) * 2, -Math.sin(a) * 2, 'orange', 8);
+                }
+            }
+
+            // 20-24: Mixes (Just let random bullets handle it)
+            if (mode >= 20 && t % 5 === 0) {
+                spawnB(Math.random() * WIDTH, -10, (Math.random() - 0.5) * 6, 6, '#fff', 4);
+            }
+        }
+
+        function updateDialogue(mode) {
+            const lines = [
+                "* Rain of Despair.", "* He targets your soul.", "* Walls closing in.",
+                "* Spiral of Fate.", "* GASTER BEAM!", "* Total Chaos.",
+                "* Gravity increases.", "* No escape.", "* WORLD CLEAVER!",
+                "* NOVA BURST!", "* VOID VORTEX!", "* HEAVEN'S GATE!",
+                "* DNA DESTRUCTION.", "* THE SAW.", "* MINFIELD DEPLOYED.",
+                "* EXPANSION.", "* SCATTER!", "* WAVEFORM.",
+                "* SNIPER READY.", "* ORBITAL STRIKE."
+            ];
+            if (lines[mode]) dialogue.innerText = lines[mode];
+            else dialogue.innerText = "* The Spine trembles...";
+        }
+
+        /* --- SPAWNERS --- */
+        function spawnB(x, y, vx, vy, color, size, homing = false) {
+            // Hard Cap 100 for optimization
+            if (state.bullets.length > 100) return;
+            state.bullets.push({ x, y, vx, vy, color, size, homing });
+        }
+
+        function spawnPlayerShot() {
+            state.pBullets.push({ x: state.player.x, y: state.player.y, vx: 0, vy: -10, w: 4, h: 10 });
+            if (state.phase === 2) {
+                state.pBullets.push({ x: state.player.x - 5, y: state.player.y, vx: -1, vy: -10, w: 4, h: 10 });
+                state.pBullets.push({ x: state.player.x + 5, y: state.player.y, vx: 1, vy: -10, w: 4, h: 10 });
+            }
+        }
+
+        function spawnBeam(vertical) {
+            let isVert = vertical !== undefined ? vertical : Math.random() > 0.5;
+            state.beams.push({
+                x: isVert ? Math.random() * (WIDTH - 30) : 0, y: isVert ? 0 : Math.random() * (HEIGHT - 30),
+                w: isVert ? 30 : WIDTH, h: isVert ? HEIGHT : 30, timer: 60, active: false
+            });
+        }
+
+        function aimAtPlayer(x, y, speed, color, size = 6) {
+            let angle = Math.atan2(state.player.y - y, state.player.x - x);
+            spawnB(x, y, Math.cos(angle) * speed, Math.sin(angle) * speed, color, size);
+        }
+
+        /* --- DRAW --- */
+        function drawPlayer() {
+            ctx.fillStyle = 'red';
+            const s = 14;
+            ctx.save();
+            ctx.translate(state.player.x, state.player.y);
+            ctx.beginPath();
+            ctx.moveTo(0, s / 4); ctx.bezierCurveTo(0, 0, -s / 2, 0, -s / 2, s / 4);
+            ctx.bezierCurveTo(-s / 2, s / 2, 0, s * 0.8, 0, s); ctx.bezierCurveTo(0, s * 0.8, s / 2, s / 2, s / 2, s / 4);
+            ctx.bezierCurveTo(s / 2, 0, 0, 0, 0, s / 4);
+            ctx.fill(); ctx.restore();
+        }
+
+        function drawBullets() {
+            ctx.fillStyle = 'yellow';
+            state.pBullets.forEach(b => ctx.fillRect(b.x, b.y, b.w, b.h));
+
+            state.bullets.forEach(b => {
+                ctx.fillStyle = b.color;
+                ctx.beginPath(); ctx.arc(b.x, b.y, b.size, 0, Math.PI * 2); ctx.fill();
+            });
+        }
+
+        function drawBeams() {
+            state.beams.forEach(b => {
+                if (b.active) {
+                    ctx.fillStyle = 'white'; ctx.shadowBlur = 20; ctx.shadowColor = 'cyan';
+                    ctx.fillRect(b.x, b.y, b.w, b.h); ctx.shadowBlur = 0;
+                } else {
+                    ctx.fillStyle = 'rgba(255, 0, 0, 0.3)'; ctx.fillRect(b.x, b.y, b.w, b.h);
+                    ctx.fillStyle = 'red';
+                    if (b.w > b.h) ctx.fillRect(b.x, b.y + b.h / 2 - 1, b.w, 2);
+                    else ctx.fillRect(b.x + b.w / 2 - 1, b.y, 2, b.h);
+                }
+            });
+        }
+
+        /* --- PHYSICS --- */
+        function updatePhysics() {
+            for (let i = state.bullets.length - 1; i >= 0; i--) {
+                let b = state.bullets[i];
+                if (b.homing) {
+                    let angle = Math.atan2(state.player.y - b.y, state.player.x - b.x);
+                    b.vx += Math.cos(angle) * 0.15; b.vy += Math.sin(angle) * 0.15;
+                }
+                b.x += b.vx; b.y += b.vy;
+
+                let dx = (state.player.x + 8) - b.x; let dy = (state.player.y + 8) - b.y;
+                if ((dx * dx + dy * dy) < (b.size + 4) * (b.size + 4)) {
+                    hitPlayer(10); state.bullets.splice(i, 1); continue;
+                }
+                if (b.y > HEIGHT + 50 || b.x < -50 || b.x > WIDTH + 50 || b.y < -50) state.bullets.splice(i, 1);
+            }
+
+            for (let i = state.pBullets.length - 1; i >= 0; i--) {
+                let b = state.pBullets[i];
+                b.x += b.vx; b.y += b.vy;
+
+                if (b.x > state.boss.x && b.x < state.boss.x + state.boss.w &&
+                    b.y > state.boss.y && b.y < state.boss.y + state.boss.h) {
+                    damageBoss(15); state.pBullets.splice(i, 1);
+                } else if (b.y < -20) {
+                    state.pBullets.splice(i, 1);
+                }
+            }
+
+            for (let i = state.beams.length - 1; i >= 0; i--) {
+                let bm = state.beams[i];
+                bm.timer--;
+                if (bm.timer === 0) {
+                    bm.active = true;
+                    document.getElementById('player-ui').classList.add('shake-hard');
+                    setTimeout(() => document.getElementById('player-ui').classList.remove('shake-hard'), 300);
+                }
+                if (bm.active) {
+                    if (state.player.x > bm.x && state.player.x < bm.x + bm.w && state.player.y > bm.y && state.player.y < bm.y + bm.h) {
+                        hitPlayer(2);
+                    }
+                    if (bm.timer < -20) state.beams.splice(i, 1);
+                }
+            }
+        }
+
+        /* --- STATUS --- */
+        function hitPlayer(dmg) {
+            state.hp -= dmg; if (state.hp < 0) state.hp = 0;
+            hpText.innerText = Math.floor(state.hp) + " / " + PLAYER_MAX_HP;
+            pBar.style.width = (state.hp / PLAYER_MAX_HP * 100) + '%';
+            const ui = document.getElementById('player-ui');
+            ui.classList.remove('shake-hard'); void ui.offsetWidth; ui.classList.add('shake-hard');
+            if (state.hp <= 0) {
+                state.gameActive = false;
+                document.getElementById('game-over-screen').style.display = 'flex';
+            }
+        }
+
+        function damageBoss(dmg) {
+            state.bossHp -= dmg;
+            const pct = Math.max(0, (state.bossHp / BOSS_MAX_HP) * 100);
+            bossBar.style.width = pct + '%';
+            if (state.bossHp <= 0) {
+                state.gameActive = false;
+                bossEntity.style.filter = "grayscale(1) brightness(300%)";
+                bossEntity.style.animation = "shake-hard 0.2s infinite";
+                setTimeout(() => {
+                    document.getElementById('victory-screen').style.display = 'flex';
+                }, 1000);
+            }
+        }
+
+        function useItem() {
+            if (state.items > 0 && state.hp > 0) {
+                state.items--;
+                state.hp = Math.min(state.hp + 50, PLAYER_MAX_HP);
+                hpText.innerText = Math.floor(state.hp) + " / " + PLAYER_MAX_HP;
+                pBar.style.width = (state.hp / PLAYER_MAX_HP * 100) + '%';
+                document.getElementById('item-count').innerText = state.items;
+                dialogue.innerText = "* Determination restored.";
+                if (state.items === 0) document.getElementById('heal-btn').disabled = true;
+            }
+        }
+
+        /* --- INPUT --- */
+        stage.addEventListener('touchstart', e => {
+            e.preventDefault(); state.touch.active = true;
+            const t = e.touches[0];
+            const rect = stage.getBoundingClientRect();
+            const scale = WIDTH / rect.width;
+            state.touch.x = (t.clientX - rect.left) * scale;
+            state.touch.y = (t.clientY - rect.top) * scale;
+        }, { passive: false });
+
+        stage.addEventListener('touchmove', e => {
+            e.preventDefault(); if (!state.gameActive) return;
+            let tx = e.touches[0].clientX; let ty = e.touches[0].clientY;
+            let dx = (tx - state.touch.x) * 1.5; let dy = (ty - state.touch.y) * 1.5;
+            state.player.x = Math.max(0, Math.min(WIDTH - 16, state.player.x + dx));
+            state.player.y = Math.max(0, Math.min(HEIGHT - 16, state.player.y + dy));
+            state.touch.x = tx; state.touch.y = ty;
+        }, { passive: false });
+
+        stage.addEventListener('touchend', () => state.touch.active = false);
+
+        const keys = {};
+        window.addEventListener('keydown', e => keys[e.key] = true);
+        window.addEventListener('keyup', e => keys[e.key] = false);
+        const _origLoop = loop;
+        loop = function () {
+            const spd = 4;
+            if (keys['ArrowUp'] || keys['w']) state.player.y = Math.max(0, state.player.y - spd);
+            if (keys['ArrowDown'] || keys['s']) state.player.y = Math.min(HEIGHT - 16, state.player.y + spd);
+            if (keys['ArrowLeft'] || keys['a']) state.player.x = Math.max(0, state.player.x - spd);
+            if (keys['ArrowRight'] || keys['d']) state.player.x = Math.min(WIDTH - 16, state.player.x + spd);
+            _origLoop();
+        }
+
+        function openLore() { state.paused = true; document.getElementById('lore-screen').style.display = 'flex'; }
+        function closeLore() { document.getElementById('lore-screen').style.display = 'none'; if (state.gameActive) { state.paused = false; loop(); } }
+
+    </script>
+</body>
+
+</html>
