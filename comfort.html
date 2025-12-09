@@ -50,6 +50,53 @@
             --msg-text: #ff521a;
         }
 
+        .return-btn {
+        position: fixed; /* Stays in corner even if she scrolls */
+        top: 25px;
+        left: 25px;
+        z-index: 1000;
+        
+        /* The Look */
+        background: rgba(255, 255, 255, 0.9); /* White/Soft background */
+        color: #000; /* Dark text */
+        border: 2px solid #000;
+        border-radius: 50px; /* Pill shape */
+        padding: 12px 24px;
+        
+        /* Typography */
+        font-family: 'Courier Prime', 'Courier New', monospace;
+        font-weight: bold;
+        font-size: 0.9rem;
+        text-decoration: none; /* Removes underline */
+        
+        /* The Animation Setup */
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* HOVER STATE: Turns into the "Dark Mode" aesthetic */
+        .return-btn:hover {
+            background: #000;
+            color: #00f3ff; /* Cyan Neon */
+            border-color: #00f3ff;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
+            transform: translateY(-2px); /* Floats up slightly */
+        }
+    
+        /* CLICK STATE: Presses down */
+        .return-btn:active {
+            transform: translateY(1px) scale(0.98);
+            box-shadow: 0 0 5px rgba(0, 243, 255, 0.4);
+        }
+        
+        .arrow-icon {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
         /* --- ZELDA MODE --- */
         body.theme-zelda {
             --bg-color: #2c3e50;
@@ -699,17 +746,8 @@
 </head>
 
 <body>
-    <a href="index.html" style="position: absolute; top: 20px; left: 20px; text-decoration: none; z-index: 1000;">
-    <button style="
-        background: black; 
-        color: #00f3ff; 
-        border: 1px solid #00f3ff; 
-        padding: 10px 15px; 
-        font-family: monospace; 
-        cursor: pointer; 
-        border-radius: 5px;">
-        ⬅ RETURN TO SERVER
-    </button>
+    <a href="index.html" class="return-btn">
+    <span class="arrow-icon">←</span> BACK TO SERVER
     </a>
 
     <div class="fairy-container">
@@ -974,3 +1012,4 @@
 
 
 </html>
+
