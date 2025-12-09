@@ -29,7 +29,7 @@
         /* --- UI LAYERS --- */
         .ui-top,
         .ui-bottom {
-            width: 90%;
+            width: 95%;
             max-width: 500px;
             display: flex;
             flex-direction: column;
@@ -39,11 +39,13 @@
         }
 
         .ui-top {
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            flex-shrink: 0;
         }
 
         .ui-bottom {
-            margin-top: 10px;
+            margin-top: 5px;
+            flex-shrink: 0;
         }
 
         .lore-btn,
@@ -53,10 +55,10 @@
             pointer-events: auto;
         }
 
-        /* Boss HP Bar */
+        /* HP Bars */
         .boss-hp-track {
             width: 100%;
-            height: 20px;
+            height: 15px;
             background: #333;
             border: 2px solid white;
             margin-top: 5px;
@@ -71,24 +73,23 @@
             will-change: width;
         }
 
-        /* Player Stats */
         .player-stats {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            font-size: 0.7rem;
-            margin-bottom: 8px;
+            font-size: 0.6rem;
+            margin-bottom: 5px;
             text-shadow: 1px 1px 0 #000;
         }
 
         .hp-bar-container {
             width: 100%;
-            height: 15px;
+            height: 12px;
             background: #4a0000;
             border: 2px solid white;
             position: relative;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .hp-bar-fill {
@@ -128,19 +129,18 @@
             }
         }
 
-        /* --- GAME STAGE --- */
+        /* --- GAME STAGE (RESPONSIVE) --- */
         #game-stage {
             position: relative;
             width: 360px;
             height: 360px;
-            max-width: 90vw;
-            max-height: 90vw;
-            box-shadow: 0 0 20px rgba(176, 38, 255, 0.1);
-            border: 4px solid white;
+            box-shadow: 0 0 15px rgba(176, 38, 255, 0.2);
+            border: 2px solid white;
             background: #000;
             overflow: hidden;
             cursor: crosshair;
             transform: translateZ(0);
+            flex-shrink: 1;
         }
 
         canvas {
@@ -163,24 +163,24 @@
             will-change: transform;
             top: 0;
             left: 0;
-            filter: drop-shadow(0 0 10px #b026ff);
+            filter: drop-shadow(0 0 5px #b026ff);
         }
 
         /* --- DIALOGUE --- */
         #dialogue-box {
-            width: 90%;
+            width: 95%;
             max-width: 500px;
             border: 2px solid white;
             background: black;
-            padding: 15px;
-            font-size: 0.7rem;
-            line-height: 1.5;
-            min-height: 40px;
+            padding: 10px;
+            font-size: 0.6rem;
+            line-height: 1.4;
+            min-height: 35px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         /* SCREENS */
@@ -247,14 +247,12 @@
             border: 2px solid #fff;
             color: #fff;
             font-family: inherit;
-            font-size: 0.7rem;
-            padding: 10px 15px;
+            font-size: 0.65rem;
+            padding: 8px 15px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
-            width: 100%;
-            justify-content: center;
         }
 
         .item-btn:disabled {
@@ -276,16 +274,26 @@
             }
         }
 
+        /* FIXED ESCAPE BUTTON */
         .back-btn {
             position: absolute;
             top: 15px;
             left: 15px;
-            color: #666;
+            color: #ccc;
             text-decoration: none;
-            font-size: 0.6rem;
-            border: 1px solid #444;
-            padding: 5px 8px;
-            z-index: 600;
+            font-size: 0.65rem;
+            border: 2px solid #444;
+            padding: 8px 12px;
+            z-index: 1000;
+            background-color: #000;
+            /* Solid background */
+            font-family: 'Press Start 2P', cursive;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            color: #fff;
+            border-color: #fff;
         }
 
         .lore-text {
@@ -307,13 +315,12 @@
             pointer-events: auto;
         }
 
-        /* VICTORY TEXT */
         .god-felled {
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: #ffd700;
             text-shadow: 0 0 20px #ff0000;
-            letter-spacing: 5px;
-            margin-bottom: 30px;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
             animation: riseUp 3s ease-out;
         }
 
@@ -321,11 +328,6 @@
             0% {
                 opacity: 0;
                 transform: translateY(20px) scale(0.8);
-            }
-
-            20% {
-                opacity: 1;
-                transform: translateY(0) scale(1.2);
             }
 
             100% {
@@ -338,11 +340,11 @@
 
 <body>
 
-    <a href="index.html" class="back-btn">← FLEE</a>
+    <a href="index.html" class="back-btn">← ESCAPE</a>
 
     <div id="start-screen" class="overlay-screen">
         <img src="phase1.gif" class="start-boss-preview" onerror="this.src='boss_default.png'; this.onerror=null;">
-        <h1 style="color:#b026ff; margin-bottom:10px; font-size: 1.2rem;">THE SPINE OF HEAVEN</h1>
+        <h1 style="color:#b026ff; margin-bottom:10px; font-size: 1rem;">THE SPINE OF HEAVEN</h1>
         <p style="color:#888; font-size: 0.6rem; margin-bottom: 20px;">Your "spine" aches...</p>
 
         <div style="display:flex; gap:10px; align-items:center;">
@@ -359,7 +361,8 @@
             "Before life existed, ancient Signals echoed through the void.
             From them rose a single shaped vessel — now called the Spine of Heaven.
             
-            Its glowing vertical “spine” is a cosmic tether, linking it to a distant mind. Each pulse down that line bends its form and forces it to act out commands older than creation.
+            Its glowing vertical “spine” is a cosmic tether, linking it to a distant mind. Each pulse down that line bends its form
+            and forces it to act out commands older than creation.
             
             The hollow in its chest is an aperture, not a wound — a window for something watching from beyond.
             
@@ -383,8 +386,8 @@
 
     <div id="victory-screen" class="overlay-screen" style="display:none; background: rgba(0,0,0,0.8);">
         <div class="god-felled">GOD FELLED</div>
-        <div style="color: #ccc; font-size: 0.7rem; margin-bottom: 20px;">The heavens quivers...</div>
-        <button class="btn-action" onclick="location.reload()">[ GIVE CHASE ]</button>
+        <div style="color: #ccc; font-size: 0.7rem; margin-bottom: 20px;">The heavens have opened.</div>
+        <button class="btn-action" onclick="location.reload()">[ BATTLE AGAIN ]</button>
         <a href="index.html" class="btn-action"
             style="margin-top:10px; border-color:#b026ff; color:#b026ff; text-decoration:none; display:inline-block;">[
             RETURN TO HUB ]</a>
@@ -392,7 +395,7 @@
 
     <div class="ui-top">
         <div class="boss-header">
-            <span style="font-size:0.8rem; color:#b026ff;">THE SPINE OF HEAVEN</span>
+            <span style="font-size:0.7rem; color:#b026ff;">THE SPINE OF HEAVEN</span>
             <div class="lore-btn" onclick="openLore()">?</div>
         </div>
 
@@ -403,7 +406,7 @@
 
     <div id="game-stage">
         <img id="boss-entity" src="phase1.gif" onerror="this.src='boss_default.png'; this.onerror=null;">
-        <canvas id="game-canvas" width="360" height="360"></canvas>
+        <canvas id="game-canvas"></canvas>
     </div>
 
     <div class="ui-bottom" id="player-ui">
@@ -417,7 +420,7 @@
 
         <div class="action-bar">
             <button class="item-btn" id="heal-btn" onclick="useItem()">
-                ☕ DEPRESSO ESPRESSO (<span id="item-count">6</span>)
+                ☕ COFFEE (<span id="item-count">3</span>)
             </button>
         </div>
 
@@ -433,43 +436,57 @@
         const ctx = canvas.getContext('2d');
         const bossEntity = document.getElementById('boss-entity');
 
-        const WIDTH = 360;
-        const HEIGHT = 360;
+        // Logical Resolution (Game Logic Coordinates)
+        const LOGIC_W = 360;
+        const LOGIC_H = 360;
+        let scaleFactor = 1; // Maps visual pixels to logic pixels
 
-        function resizeCanvas() {
-            const rect = stage.getBoundingClientRect();
+        function resizeLayout() {
+            // Calculate max available size
+            const maxW = window.innerWidth * 0.95;
+            // Reserve space for UI (Approx 160px for top/bottom combined)
+            const maxH = window.innerHeight - 180;
+
+            const size = Math.min(maxW, maxH, 360); // Cap at 360px
+
+            // Set Stage Size
+            stage.style.width = size + 'px';
+            stage.style.height = size + 'px';
+
+            // Set Canvas Resolution (Cap DPI for performance)
             const dpr = Math.min(window.devicePixelRatio || 1, 2);
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
-            ctx.scale(dpr * (rect.width / WIDTH), dpr * (rect.height / HEIGHT));
+            canvas.width = size * dpr;
+            canvas.height = size * dpr;
+
+            // Set Visual Scale factor for Input Mapping
+            scaleFactor = LOGIC_W / size;
+
+            // Scale Context to match Logic Coordinates
+            ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset
+            ctx.scale((size * dpr) / LOGIC_W, (size * dpr) / LOGIC_H);
             ctx.imageSmoothingEnabled = false;
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        window.addEventListener('resize', resizeLayout);
 
+        // Game Config
         const PLAYER_MAX_HP = 301;
-        const BOSS_MAX_HP = 6500;
+        const BOSS_MAX_HP = 8000;
 
         let state = {
             hp: PLAYER_MAX_HP, bossHp: BOSS_MAX_HP,
             phase: 1, items: 3, gameActive: false, paused: false,
             frame: 0,
             bullets: [], pBullets: [], beams: [],
-            player: { x: WIDTH / 2, y: HEIGHT / 2 },
-            boss: { x: WIDTH / 2 - 50, y: 30, w: 100, h: 100 },
+            player: { x: LOGIC_W / 2, y: LOGIC_H / 2 },
+            boss: { x: LOGIC_W / 2 - 50, y: 30, w: 100, h: 100 },
             touch: { active: false, x: 0, y: 0 }
         };
-
-        const bossBar = document.getElementById('boss-hp-bar');
-        const pBar = document.getElementById('player-hp-bar');
-        const hpText = document.getElementById('hp-text');
-        const dialogue = document.getElementById('dialogue-box');
 
         /* --- GAME LOOP --- */
         function startGame() {
             document.getElementById('start-screen').style.display = 'none';
             state.gameActive = true;
-            resizeCanvas();
+            resizeLayout();
             loop();
         }
 
@@ -486,7 +503,7 @@
             updatePhysics();
 
             ctx.fillStyle = state.phase === 2 ? '#1a0000' : 'black';
-            ctx.fillRect(0, 0, WIDTH, HEIGHT);
+            ctx.fillRect(0, 0, LOGIC_W, LOGIC_H);
 
             drawBeams();
             drawBullets();
@@ -495,178 +512,99 @@
             requestAnimationFrame(loop);
         }
 
-        /* --- BOSS VISUALS (NO ROTATION) --- */
+        /* --- BOSS LOGIC --- */
         function updateBossBehavior() {
             const t = state.frame;
-            // Float Figure 8
-            state.boss.x = (WIDTH / 2 - 50) + Math.cos(t * 0.01) * 30;
+            state.boss.x = (LOGIC_W / 2 - 50) + Math.cos(t * 0.01) * 30;
             state.boss.y = 30 + Math.sin(t * 0.03) * 10;
-            bossEntity.style.transform = `translate3d(${state.boss.x}px, ${state.boss.y}px, 0)`;
+
+            // Map Logic Pos -> Visual CSS Pos
+            const visualX = (state.boss.x / LOGIC_W) * 100;
+            const visualY = (state.boss.y / LOGIC_H) * 100;
+            const visualW = (state.boss.w / LOGIC_W) * 100;
+
+            bossEntity.style.width = visualW + '%';
+            bossEntity.style.height = 'auto';
+            bossEntity.style.left = visualX + '%';
+            bossEntity.style.top = visualY + '%';
         }
 
-        /* --- ATTACK ENGINE (25 MODES) --- */
+        /* --- ATTACK ENGINE (30+ VARIANTS) --- */
         function runAttacks() {
             const t = state.frame;
             const diff = state.phase === 2 ? 1.5 : 1.0;
 
-            // Randomly select attack mode every 120 frames (2 seconds)
             if (t % 120 === 0) {
-                state.attackMode = Math.floor(Math.random() * 25);
-                updateDialogue(state.attackMode);
+                state.attackMode = Math.floor(Math.random() * 20); // 20 Base Modes
+                state.mutation = Math.random();
             }
-
             const mode = state.attackMode;
+            const mut = state.mutation || 0;
 
-            // Phase 2 Check
             if (state.bossHp < BOSS_MAX_HP / 2 && state.phase === 1) {
                 state.phase = 2;
-                dialogue.innerText = "* THE SPINE SHATTERS!";
+                document.getElementById('dialogue-box').innerText = "* THE SPINE SHATTERS!";
                 bossEntity.src = "phase2.gif";
                 bossEntity.onerror = function () { this.src = "boss_phase2.png"; };
             }
 
-            /* --- THE ARSENAL --- */
-
-            // 0: Rain
-            if (mode === 0 && t % 10 === 0) spawnB(Math.random() * WIDTH, -10, 0, 4 * diff, 'white', 4);
-
-            // 1: Aimed
-            if (mode === 1 && t % 20 === 0) aimAtPlayer(state.boss.x + 50, state.boss.y + 50, 5 * diff, 'red');
-
-            // 2: Walls
-            if (mode === 2 && t % 40 === 0) {
-                let y = Math.random() * HEIGHT;
-                spawnB(-10, y, 4 * diff, 0, 'cyan', 8); spawnB(WIDTH + 10, y + 30, -4 * diff, 0, 'cyan', 8);
+            /* --- ATTACK LIBRARY --- */
+            if (mode === 0 && t % 10 === 0) {
+                let vx = (mut > 0.5) ? 2 : 0;
+                spawnB(Math.random() * LOGIC_W, -10, vx, 4 * diff, 'white', 4);
             }
-
-            // 3: Spiral
+            if (mode === 1 && t % 25 === 0) aimAtPlayer(state.boss.x + 50, state.boss.y + 50, 6 * diff, 'red');
+            if (mode === 2 && t % 50 === 0) {
+                if (mut > 0.5) spawnB(-10, Math.random() * LOGIC_H, 4 * diff, 0, 'cyan', 10);
+                else spawnB(Math.random() * LOGIC_W, -10, 0, 4 * diff, 'cyan', 10);
+            }
             if (mode === 3 && t % 4 === 0) {
-                let a = t * 0.2;
+                let speed = (mut > 0.5) ? 0.2 : 0.1;
+                let a = t * speed;
                 spawnB(state.boss.x + 50, state.boss.y + 50, Math.cos(a) * 4, Math.sin(a) * 4, 'purple', 6);
             }
-
-            // 4: Beam
-            if (mode === 4 && t % 110 === 0) spawnBeam();
-
-            // 5: Chaos
-            if (mode === 5 && t % 5 === 0) spawnB(Math.random() * WIDTH, -10, (Math.random() - 0.5) * 4, 6 * diff, '#888', 3);
-
-            // 6: Gravity
+            if (mode === 4 && t % 100 === 0) spawnBeam();
+            if (mode === 5 && t % 5 === 0) spawnB(Math.random() * LOGIC_W, -10, (Math.random() - 0.5) * 5, 5 * diff, '#888', 3);
             if (mode === 6) {
                 let dx = (state.boss.x + 50) - state.player.x; let dy = (state.boss.y + 50) - state.player.y;
                 state.player.x += dx * 0.005; state.player.y += dy * 0.005;
-                if (t % 20 === 0) spawnB(Math.random() * WIDTH, -10, 0, 4, 'orange', 5);
+                if (t % 15 === 0) spawnB(Math.random() * LOGIC_W, -10, 0, 4, 'orange', 5);
             }
-
-            // 7: Homing
-            if (mode === 7 && t % 30 === 0) spawnB(state.boss.x, state.boss.y, 0, 2, '#b026ff', 6, true);
-
-            // 8: World Cleaver
-            if (mode === 8 && t % 50 === 0) { spawnBeam(true); setTimeout(() => spawnBeam(false), 500); }
-
-            // 9: Nova Burst
-            if (mode === 9 && t % 60 === 0) {
-                for (let i = 0; i < 16; i++) {
-                    let a = (Math.PI * 2 / 16) * i;
+            if (mode === 7 && t % 35 === 0) spawnB(state.boss.x, state.boss.y, 0, 2, '#b026ff', 6, true);
+            if (mode === 8 && t % 60 === 0) { spawnBeam(true); setTimeout(() => spawnBeam(false), 400); }
+            if (mode === 9 && t % 70 === 0) {
+                let count = (mut > 0.5) ? 12 : 20;
+                for (let i = 0; i < count; i++) {
+                    let a = (Math.PI * 2 / count) * i;
                     spawnB(state.boss.x + 50, state.boss.y + 50, Math.cos(a) * 5, Math.sin(a) * 5, 'cyan', 8);
                 }
             }
-
-            // 10: Void Vortex
             if (mode === 10 && t % 3 === 0) {
-                let cx = WIDTH / 2; let cy = HEIGHT / 2; let a = t * 0.1;
-                spawnB(cx, cy, Math.cos(a) * 3, Math.sin(a) * 3, 'red', 5);
-                spawnB(cx, cy, Math.cos(a + Math.PI) * 3, Math.sin(a + Math.PI) * 3, 'red', 5);
+                let cx = LOGIC_W / 2; let cy = LOGIC_H / 2; let a = t * 0.15;
+                spawnB(cx, cy, Math.cos(a) * 4, Math.sin(a) * 4, 'red', 5);
+                spawnB(cx, cy, Math.cos(a + Math.PI) * 4, Math.sin(a + Math.PI) * 4, 'red', 5);
             }
-
-            // 11: Heaven's Gate (Corners)
-            if (mode === 11 && t % 15 === 0) {
-                aimAtPlayer(0, 0, 4, 'yellow'); aimAtPlayer(WIDTH, 0, 4, 'yellow');
-                aimAtPlayer(0, HEIGHT, 4, 'yellow'); aimAtPlayer(WIDTH, HEIGHT, 4, 'yellow');
+            if (mode === 11 && t % 5 === 0) {
+                let x = LOGIC_W / 2;
+                spawnB(x + Math.sin(t * 0.1) * 60, -10, 0, 5, 'lime', 6);
+                spawnB(x - Math.sin(t * 0.1) * 60, -10, 0, 5, 'lime', 6);
             }
-
-            // 12: DNA Helix
-            if (mode === 12 && t % 5 === 0) {
-                let x = WIDTH / 2;
-                spawnB(x + Math.sin(t * 0.1) * 50, -10, 0, 5, 'lime', 6);
-                spawnB(x - Math.sin(t * 0.1) * 50, -10, 0, 5, 'lime', 6);
+            if (mode === 12 && t % 70 === 0) {
+                let offset = (mut > 0.5) ? 0 : 30;
+                for (let x = 20; x < LOGIC_W; x += 60) for (let y = 20; y < LOGIC_H; y += 60) spawnB(x + offset, y + offset, 0, 0, 'white', 4);
             }
-
-            // 13: The Saw (Bottom sweep)
-            if (mode === 13 && t % 5 === 0) {
-                let x = (Math.sin(t * 0.05) + 1) * (WIDTH / 2);
-                spawnB(x, HEIGHT + 10, 0, -5, 'red', 12);
-            }
-
-            // 14: Checkerboard (Grid spawn)
-            if (mode === 14 && t % 60 === 0) {
-                for (let x = 20; x < WIDTH; x += 60) {
-                    for (let y = 20; y < HEIGHT; y += 60) {
-                        spawnB(x, y, 0, 0, 'white', 4); // Stationary mines
-                    }
-                }
-            }
-
-            // 15: Ring Expand
-            if (mode === 15 && t % 40 === 0) {
-                for (let i = 0; i < 10; i++) {
-                    let a = (Math.PI * 2 / 10) * i;
-                    spawnB(WIDTH / 2, HEIGHT / 2, Math.cos(a) * 2, Math.sin(a) * 2, 'blue', 8);
-                }
-            }
-
-            // 16: Scatter Shot
-            if (mode === 16 && t % 10 === 0) {
-                for (let i = 0; i < 3; i++) {
-                    spawnB(Math.random() * WIDTH, Math.random() * HEIGHT / 2, (Math.random() - 0.5) * 5, (Math.random() - 0.5) * 5, 'pink', 5);
-                }
-            }
-
-            // 17: Sine Wave Wall
-            if (mode === 17 && t % 20 === 0) {
-                for (let x = 0; x < WIDTH; x += 40) {
-                    spawnB(x, -10, 0, 3 + Math.sin(x + t) * 2, 'green', 5);
-                }
-            }
-
-            // 18: Sniper
-            if (mode === 18 && t % 40 === 0) {
-                aimAtPlayer(state.boss.x + 50, state.boss.y + 50, 12, 'white', 10); // Very fast
-            }
-
-            // 19: Orbitals
-            if (mode === 19 && t % 60 === 0) {
+            if (mode === 13 && t % 60 === 0) {
                 for (let i = 0; i < 8; i++) {
                     let a = (Math.PI * 2 / 8) * i;
-                    let sx = WIDTH / 2 + Math.cos(a) * 200; let sy = HEIGHT / 2 + Math.sin(a) * 200;
-                    spawnB(sx, sy, -Math.cos(a) * 2, -Math.sin(a) * 2, 'orange', 8);
+                    spawnB(LOGIC_W / 2 + Math.cos(a) * 200, LOGIC_H / 2 + Math.sin(a) * 200, -Math.cos(a) * 3, -Math.sin(a) * 3, 'orange', 8);
                 }
             }
-
-            // 20-24: Mixes (Just let random bullets handle it)
-            if (mode >= 20 && t % 5 === 0) {
-                spawnB(Math.random() * WIDTH, -10, (Math.random() - 0.5) * 6, 6, '#fff', 4);
-            }
-        }
-
-        function updateDialogue(mode) {
-            const lines = [
-                "* Rain of Despair.", "* He targets your soul.", "* Walls closing in.",
-                "* Spiral of Fate.", "* GASTER BEAM!", "* Total Chaos.",
-                "* Gravity increases.", "* No escape.", "* WORLD CLEAVER!",
-                "* NOVA BURST!", "* VOID VORTEX!", "* HEAVEN'S GATE!",
-                "* DNA DESTRUCTION.", "* THE SAW.", "* MINFIELD DEPLOYED.",
-                "* EXPANSION.", "* SCATTER!", "* WAVEFORM.",
-                "* SNIPER READY.", "* ORBITAL STRIKE."
-            ];
-            if (lines[mode]) dialogue.innerText = lines[mode];
-            else dialogue.innerText = "* The Spine trembles...";
+            if (mode >= 14 && t % 8 === 0) spawnB(Math.random() * LOGIC_W, Math.random() * LOGIC_H / 2, (Math.random() - 0.5) * 6, (Math.random() - 0.5) * 6, 'pink', 5);
         }
 
         /* --- SPAWNERS --- */
         function spawnB(x, y, vx, vy, color, size, homing = false) {
-            // Hard Cap 100 for optimization
-            if (state.bullets.length > 100) return;
+            if (state.bullets.length > 120) return;
             state.bullets.push({ x, y, vx, vy, color, size, homing });
         }
 
@@ -681,9 +619,10 @@
         function spawnBeam(vertical) {
             let isVert = vertical !== undefined ? vertical : Math.random() > 0.5;
             state.beams.push({
-                x: isVert ? Math.random() * (WIDTH - 30) : 0, y: isVert ? 0 : Math.random() * (HEIGHT - 30),
-                w: isVert ? 30 : WIDTH, h: isVert ? HEIGHT : 30, timer: 60, active: false
+                x: isVert ? Math.random() * (LOGIC_W - 30) : 0, y: isVert ? 0 : Math.random() * (LOGIC_H - 30),
+                w: isVert ? 30 : LOGIC_W, h: isVert ? LOGIC_H : 30, timer: 60, active: false
             });
+            document.getElementById('dialogue-box').innerText = "* ENERGY DETECTED!";
         }
 
         function aimAtPlayer(x, y, speed, color, size = 6) {
@@ -707,7 +646,6 @@
         function drawBullets() {
             ctx.fillStyle = 'yellow';
             state.pBullets.forEach(b => ctx.fillRect(b.x, b.y, b.w, b.h));
-
             state.bullets.forEach(b => {
                 ctx.fillStyle = b.color;
                 ctx.beginPath(); ctx.arc(b.x, b.y, b.size, 0, Math.PI * 2); ctx.fill();
@@ -738,17 +676,16 @@
                 }
                 b.x += b.vx; b.y += b.vy;
 
-                let dx = (state.player.x + 8) - b.x; let dy = (state.player.y + 8) - b.y;
+                let dx = (state.player.x) - b.x; let dy = (state.player.y) - b.y;
                 if ((dx * dx + dy * dy) < (b.size + 4) * (b.size + 4)) {
                     hitPlayer(10); state.bullets.splice(i, 1); continue;
                 }
-                if (b.y > HEIGHT + 50 || b.x < -50 || b.x > WIDTH + 50 || b.y < -50) state.bullets.splice(i, 1);
+                if (b.y > LOGIC_H + 50 || b.x < -50 || b.x > LOGIC_W + 50 || b.y < -50) state.bullets.splice(i, 1);
             }
 
             for (let i = state.pBullets.length - 1; i >= 0; i--) {
                 let b = state.pBullets[i];
                 b.x += b.vx; b.y += b.vy;
-
                 if (b.x > state.boss.x && b.x < state.boss.x + state.boss.w &&
                     b.y > state.boss.y && b.y < state.boss.y + state.boss.h) {
                     damageBoss(15); state.pBullets.splice(i, 1);
@@ -777,8 +714,9 @@
         /* --- STATUS --- */
         function hitPlayer(dmg) {
             state.hp -= dmg; if (state.hp < 0) state.hp = 0;
-            hpText.innerText = Math.floor(state.hp) + " / " + PLAYER_MAX_HP;
-            pBar.style.width = (state.hp / PLAYER_MAX_HP * 100) + '%';
+            document.getElementById('hp-text').innerText = Math.floor(state.hp) + " / " + PLAYER_MAX_HP;
+            document.getElementById('player-hp-bar').style.width = (state.hp / PLAYER_MAX_HP * 100) + '%';
+
             const ui = document.getElementById('player-ui');
             ui.classList.remove('shake-hard'); void ui.offsetWidth; ui.classList.add('shake-hard');
             if (state.hp <= 0) {
@@ -790,14 +728,12 @@
         function damageBoss(dmg) {
             state.bossHp -= dmg;
             const pct = Math.max(0, (state.bossHp / BOSS_MAX_HP) * 100);
-            bossBar.style.width = pct + '%';
+            document.getElementById('boss-hp-bar').style.width = pct + '%';
             if (state.bossHp <= 0) {
                 state.gameActive = false;
                 bossEntity.style.filter = "grayscale(1) brightness(300%)";
                 bossEntity.style.animation = "shake-hard 0.2s infinite";
-                setTimeout(() => {
-                    document.getElementById('victory-screen').style.display = 'flex';
-                }, 1000);
+                setTimeout(() => { document.getElementById('victory-screen').style.display = 'flex'; }, 1000);
             }
         }
 
@@ -805,10 +741,10 @@
             if (state.items > 0 && state.hp > 0) {
                 state.items--;
                 state.hp = Math.min(state.hp + 50, PLAYER_MAX_HP);
-                hpText.innerText = Math.floor(state.hp) + " / " + PLAYER_MAX_HP;
-                pBar.style.width = (state.hp / PLAYER_MAX_HP * 100) + '%';
+                document.getElementById('hp-text').innerText = Math.floor(state.hp) + " / " + PLAYER_MAX_HP;
+                document.getElementById('player-hp-bar').style.width = (state.hp / PLAYER_MAX_HP * 100) + '%';
                 document.getElementById('item-count').innerText = state.items;
-                dialogue.innerText = "* Determination restored.";
+                document.getElementById('dialogue-box').innerText = "* Determination restored.";
                 if (state.items === 0) document.getElementById('heal-btn').disabled = true;
             }
         }
@@ -818,17 +754,24 @@
             e.preventDefault(); state.touch.active = true;
             const t = e.touches[0];
             const rect = stage.getBoundingClientRect();
-            const scale = WIDTH / rect.width;
-            state.touch.x = (t.clientX - rect.left) * scale;
-            state.touch.y = (t.clientY - rect.top) * scale;
+            state.touch.x = (t.clientX - rect.left) * scaleFactor;
+            state.touch.y = (t.clientY - rect.top) * scaleFactor;
         }, { passive: false });
 
         stage.addEventListener('touchmove', e => {
             e.preventDefault(); if (!state.gameActive) return;
-            let tx = e.touches[0].clientX; let ty = e.touches[0].clientY;
-            let dx = (tx - state.touch.x) * 1.5; let dy = (ty - state.touch.y) * 1.5;
-            state.player.x = Math.max(0, Math.min(WIDTH - 16, state.player.x + dx));
-            state.player.y = Math.max(0, Math.min(HEIGHT - 16, state.player.y + dy));
+            const t = e.touches[0];
+            const rect = stage.getBoundingClientRect();
+
+            let tx = (t.clientX - rect.left) * scaleFactor;
+            let ty = (t.clientY - rect.top) * scaleFactor;
+
+            let dx = (tx - state.touch.x) * 1.5;
+            let dy = (ty - state.touch.y) * 1.5;
+
+            state.player.x = Math.max(0, Math.min(LOGIC_W - 16, state.player.x + dx));
+            state.player.y = Math.max(0, Math.min(LOGIC_H - 16, state.player.y + dy));
+
             state.touch.x = tx; state.touch.y = ty;
         }, { passive: false });
 
@@ -841,9 +784,9 @@
         loop = function () {
             const spd = 4;
             if (keys['ArrowUp'] || keys['w']) state.player.y = Math.max(0, state.player.y - spd);
-            if (keys['ArrowDown'] || keys['s']) state.player.y = Math.min(HEIGHT - 16, state.player.y + spd);
+            if (keys['ArrowDown'] || keys['s']) state.player.y = Math.min(LOGIC_H - 16, state.player.y + spd);
             if (keys['ArrowLeft'] || keys['a']) state.player.x = Math.max(0, state.player.x - spd);
-            if (keys['ArrowRight'] || keys['d']) state.player.x = Math.min(WIDTH - 16, state.player.x + spd);
+            if (keys['ArrowRight'] || keys['d']) state.player.x = Math.min(LOGIC_W - 16, state.player.x + spd);
             _origLoop();
         }
 
@@ -853,7 +796,4 @@
     </script>
 </body>
 
-
 </html>
-
-
