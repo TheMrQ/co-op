@@ -343,7 +343,7 @@
     <div id="start-screen" class="overlay-screen">
         <img src="phase1.gif" class="start-boss-preview" onerror="this.src='boss_default.png'; this.onerror=null;">
         <h1 style="color:#b026ff; margin-bottom:10px; font-size: 1.2rem;">SPINE OF HEAVEN</h1>
-        <p style="color:#888; font-size: 0.6rem; margin-bottom: 20px;">ABSOLUTE RULER OF DISTANCE</p>
+        <p style="color:#888; font-size: 0.6rem; margin-bottom: 20px;">Your "spine" shivers...</p>
 
         <div style="display:flex; gap:10px; align-items:center;">
             <button class="btn-action" onclick="startGame()">[ INITIATE ]</button>
@@ -356,8 +356,22 @@
         <div class="lore-text">
             SUBJECT: Spine of Heaven<br>
             TYPE: Celestial Construct<br><br>
-            "A being formed from the impossible space between two points. It claims that distance is the only truth.
-            Prove it wrong."
+            "Before life existed, ancient Signals echoed through the void.
+            From them rose a single shaped vessel — now called the Spine of Heaven.
+            
+            Its glowing vertical “spine” is a cosmic tether, linking it to a distant mind. Each pulse down that line bends its form and forces it to act out commands older than creation.
+            
+            The hollow in its chest is an aperture, not a wound — a window for something watching from beyond.
+            
+            The Spine of Heaven does not think or choose.
+            It only obeys:
+            
+            “Open the path. Prepare the mind.”
+            
+            Those who fail to stop it are not killed — they are rewritten into the next Signal.
+            
+            It is neither alive nor dead.
+            Only a forgotten conduit, still carrying out a command the universe has long abandoned."
         </div>
         <button class="btn-action" onclick="closeLore()" style="border-color:#fff; color:#fff;">[ RESUME ]</button>
     </div>
@@ -369,7 +383,7 @@
 
     <div id="victory-screen" class="overlay-screen" style="display:none; background: rgba(0,0,0,0.8);">
         <div class="god-felled">GOD FELLED</div>
-        <div style="color: #ccc; font-size: 0.7rem; margin-bottom: 20px;">The heavens have opened.</div>
+        <div style="color: #ccc; font-size: 0.7rem; margin-bottom: 20px;">The heavens quivers...</div>
         <button class="btn-action" onclick="location.reload()">[ GIVE CHASE ]</button>
         <a href="index.html" class="btn-action"
             style="margin-top:10px; border-color:#b026ff; color:#b026ff; text-decoration:none; display:inline-block;">[
@@ -395,7 +409,7 @@
     <div class="ui-bottom" id="player-ui">
         <div class="player-stats">
             <span>LV 69 Lou</span>
-            <span>HP <span style="color:#ffff00" id="hp-text">201 / 201</span></span>
+            <span>HP <span style="color:#ffff00" id="hp-text">301 / 301</span></span>
         </div>
         <div class="hp-bar-container">
             <div class="hp-bar-fill" id="player-hp-bar"></div>
@@ -434,7 +448,7 @@
         resizeCanvas();
 
         const PLAYER_MAX_HP = 301;
-        const BOSS_MAX_HP = 7000;
+        const BOSS_MAX_HP = 6500;
 
         let state = {
             hp: PLAYER_MAX_HP, bossHp: BOSS_MAX_HP,
@@ -841,3 +855,4 @@
 
 
 </html>
+
