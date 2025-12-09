@@ -430,13 +430,13 @@
         let gameRunning = false;
         let score = 0;
         
-        // --- SPEED LOGIC: TURBO MODE FOR MOBILE ---
-        // If width < 600 (Mobile): Speed = 12 (Very Fast), Jump = -11
-        // If Desktop: Speed = 5 (Slow/Normal), Jump = -9
+        // --- MOBILE TURBO MODE ---
         let isMobile = window.innerWidth < 600;
-        let speed = isMobile ? 12 : 5;
-        let gravity = isMobile ? 0.8 : 0.4; 
-        let jumpPower = isMobile ? -11 : -9;
+        
+        // Settings for "Feeling Fast"
+        let speed = isMobile ? 14 : 6; 
+        let gravity = isMobile ? 0.9 : 0.5; 
+        let jumpPower = isMobile ? -13 : -10;
 
         let player = { x: 50, y: 100, w: 20, h: 20, dy: 0, jumpPower: jumpPower, grounded: true };
         let obstacles = [];
@@ -451,8 +451,12 @@
         }
 
         function drawObstacles() {
-            ctx.fillStyle = '#b026ff';
             obstacles.forEach(obs => {
+                // Different colors for different obstacle types
+                if (obs.type === 'fly') ctx.fillStyle = '#ff2a6d'; // Red Glitch
+                else if (obs.type === 'wide') ctx.fillStyle = '#00ff41'; // Green Firewall
+                else ctx.fillStyle = '#b026ff'; // Purple Standard
+
                 ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
             });
         }
@@ -471,17 +475,37 @@
             }
 
             frame++;
-            // Spawn rate much faster on mobile to match the high speed
-            let spawnRate = isMobile ? 35 : 100;
+            // Spawn very frequently on mobile because obstacles move so fast
+            let spawnRate = isMobile ? 40 : 90;
 
             if (frame % spawnRate === 0) { 
-                let height = Math.random() > 0.5 ? 20 : 30;
-                obstacles.push({ x: canvas.width, y: 130 - height, w: 20, h: height });
+                let typeSeed = Math.random();
+                let newObs = { x: canvas.width, y: 110, w: 20, h: 20, type: 'std' };
+
+                if (typeSeed > 0.7) {
+                    // Type: Flying Glitch (Red) - Higher up
+                    newObs.type = 'fly';
+                    newObs.y = 90; // Floating
+                    newObs.h = 15;
+                    newObs.w = 15;
+                } else if (typeSeed > 0.4) {
+                    // Type: Wide Firewall (Green) - Low but wide
+                    newObs.type = 'wide';
+                    newObs.y = 115;
+                    newObs.w = 30; // Wider
+                    newObs.h = 15; // Shorter
+                } else {
+                    // Type: Standard Spike (Purple)
+                    newObs.y = 110;
+                    newObs.h = 20;
+                }
+                obstacles.push(newObs);
             }
 
             obstacles.forEach((obs, index) => {
                 obs.x -= speed;
 
+                // Collision Logic
                 if (player.x < obs.x + obs.w &&
                     player.x + player.w > obs.x &&
                     player.y < obs.y + obs.h &&
