@@ -15,11 +15,14 @@
             --bg-deep: #050505;
             --panel-bg: rgba(20, 20, 20, 0.9);
             --border-color: #333;
-            --p1-color: #00f3ff; /* Elliot (Cyan) */
-            --p2-color: #b026ff; /* Lou (Purple) */
+            --p1-color: #00f3ff;
+            /* Elliot (Cyan) */
+            --p2-color: #b026ff;
+            /* Lou (Purple) */
             --text-main: #fff;
             --text-dim: #888;
-            --active-green: #00ff41; /* Neon Green */
+            --active-green: #00ff41;
+            /* Neon Green */
         }
 
         body {
@@ -102,6 +105,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             font-family: 'Press Start 2P';
+            line-height: 1.8; /* Added line height for mobile spacing */
         }
 
         .status-active {
@@ -284,26 +288,25 @@
             font-family: 'Press Start 2P';
         }
 
-        /* --- MOBILE ADJUSTMENTS (FIX FOR IPHONE 14 PRO) --- */
+        /* --- MOBILE ADJUSTMENTS --- */
         @media (max-width: 600px) {
-            /* Fix Title Wrapping */
             h1 { font-size: 1.1rem; margin-bottom: 10px; }
             
-            /* Fix Status Text */
+            /* Force [ ACTIVE ] to new line on mobile */
+            .status-active {
+                display: block;
+                margin-top: 5px;
+            }
             .subtitle { font-size: 0.7rem; letter-spacing: 1px; }
 
-            /* Fix Uptime Sizes */
             .big-number, .big-text { font-size: 1.5rem; }
             .small-time { font-size: 0.65rem; }
 
-            /* Compact Player Grid */
             .player-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
             .clock-display { font-size: 1.4rem; }
             .player-header span, .player-name { font-size: 0.6rem; }
 
-            /* Fix Canvas Width */
             #gameCanvas { width: 100%; }
-            
             .main-hub { padding-top: 20px; }
         }
     </style>
@@ -357,13 +360,11 @@
         <div id="loot-result"></div>
 
         <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-bottom: 40px;">
-    
             <button class="loot-btn" onclick="dropLoot()" style="margin-bottom: 0;">🎁 OPEN DAILY LOOT</button>
 
             <a href="comfort.html" style="text-decoration: none;">
                 <button class="loot-btn" style="border-color: #ff2a6d; color: #ff2a6d;">♥ ACTIVATE COMFORT PROTOCOL ♥</button> 
             </a>
-
         </div>
 
         <div class="game-area">
@@ -419,7 +420,7 @@
         setInterval(updateSystem, 1000);
         updateSystem();
 
-        // --- MINIGAME (MOBILE SPEED FIX) ---
+        // --- MINIGAME ---
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -429,11 +430,14 @@
         let gameRunning = false;
         let score = 0;
         
-        // INCREASED SPEED AND GRAVITY FOR MOBILE SNAP
-        let speed = 7;      // Was 4, now 7 (Faster)
-        const gravity = 0.5; // Was 0.4, now 0.5 (Heavier)
-        
-        let player = { x: 50, y: 100, w: 20, h: 20, dy: 0, jumpPower: -9, grounded: true };
+        // --- SPEED LOGIC: DETECT MOBILE VS DESKTOP ---
+        // If width < 600 (Mobile), Speed = 8 (Fast). If Desktop, Speed = 5 (Slow).
+        let isMobile = window.innerWidth < 600;
+        let speed = isMobile ? 8 : 5;
+        let gravity = isMobile ? 0.6 : 0.4; // Gravity feels different on small screens
+        let jumpPower = isMobile ? -10 : -9;
+
+        let player = { x: 50, y: 100, w: 20, h: 20, dy: 0, jumpPower: jumpPower, grounded: true };
         let obstacles = [];
         let frame = 0;
 
@@ -466,8 +470,10 @@
             }
 
             frame++;
-            // Spawn less frequently because speed is higher
-            if (frame % 80 === 0) { 
+            // Adjust spawn rate based on speed
+            let spawnRate = isMobile ? 70 : 100;
+
+            if (frame % spawnRate === 0) { 
                 let height = Math.random() > 0.5 ? 20 : 30;
                 obstacles.push({ x: canvas.width, y: 130 - height, w: 20, h: height });
             }
