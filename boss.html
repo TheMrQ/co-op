@@ -458,6 +458,7 @@
         }
         window.addEventListener('resize', resizeLayout);
 
+        // Game Config
         const PLAYER_MAX_HP = 301;
         const BOSS_MAX_HP = 7500;
 
@@ -475,6 +476,7 @@
         function startGame() {
             document.getElementById('start-screen').style.display = 'none';
             state.gameActive = true;
+            state.paused = false; /* FIX: Force unpause when starting */
             resizeLayout();
             loop();
         }
@@ -504,9 +506,11 @@
         /* --- BOSS LOGIC --- */
         function updateBossBehavior() {
             const t = state.frame;
-            state.boss.x = (LOGIC_W / 2 - 50) + Math.cos(t * 0.01) * 30;
-            state.boss.y = 30 + Math.sin(t * 0.03) * 10;
+            // Increased Speed from 0.01/0.03 to 0.04/0.07 for faster movement
+            state.boss.x = (LOGIC_W / 2 - 50) + Math.cos(t * 0.04) * 40;
+            state.boss.y = 30 + Math.sin(t * 0.07) * 15;
 
+            // Map Logic Pos -> Visual CSS Pos
             const visualX = (state.boss.x / LOGIC_W) * 100;
             const visualY = (state.boss.y / LOGIC_H) * 100;
             const visualW = (state.boss.w / LOGIC_W) * 100;
