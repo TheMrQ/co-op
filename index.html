@@ -23,6 +23,7 @@
             --text-dim: #888;
             --active-green: #00ff41;
             /* Neon Green */
+            --quest-gold: #ffd700;
         }
 
         body {
@@ -43,14 +44,22 @@
         }
 
         @keyframes bgPulse {
-            0% { background-size: 100% 100%; }
-            100% { background-size: 120% 120%; }
+            0% {
+                background-size: 100% 100%;
+            }
+
+            100% {
+                background-size: 120% 120%;
+            }
         }
 
         /* --- BACKGROUND ANIMATION --- */
         .emoji-bg {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 0;
             opacity: 0.08;
             pointer-events: none;
@@ -72,9 +81,17 @@
         }
 
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
         }
 
         .main-hub {
@@ -96,6 +113,9 @@
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 20px rgba(176, 38, 255, 0.5);
             line-height: 1.5;
+            cursor: pointer;
+            /* Hint that it's clickable */
+            user-select: none;
         }
 
         .subtitle {
@@ -115,8 +135,15 @@
         }
 
         @keyframes pulseGreen {
-            from { text-shadow: 0 0 5px rgba(0, 255, 65, 0.4); opacity: 0.8; }
-            to { text-shadow: 0 0 20px rgba(0, 255, 65, 1); opacity: 1; }
+            from {
+                text-shadow: 0 0 5px rgba(0, 255, 65, 0.4);
+                opacity: 0.8;
+            }
+
+            to {
+                text-shadow: 0 0 20px rgba(0, 255, 65, 1);
+                opacity: 1;
+            }
         }
 
         /* --- UPTIME TRACKER --- */
@@ -172,7 +199,9 @@
             margin-top: 10px;
         }
 
-        .small-num { color: var(--p2-color); }
+        .small-num {
+            color: var(--p2-color);
+        }
 
         /* --- PLAYER CARDS --- */
         .player-grid {
@@ -192,8 +221,13 @@
             border-bottom-style: solid;
         }
 
-        .player-card.p1 { border-bottom-color: var(--p1-color); }
-        .player-card.p2 { border-bottom-color: var(--p2-color); }
+        .player-card.p1 {
+            border-bottom-color: var(--p1-color);
+        }
+
+        .player-card.p2 {
+            border-bottom-color: var(--p2-color);
+        }
 
         .player-header {
             display: flex;
@@ -257,6 +291,66 @@
             font-weight: bold;
         }
 
+        /* --- QUEST LOG (NEW FEATURE) --- */
+        .quest-box {
+            background: #000;
+            border: 2px solid var(--text-dim);
+            border-radius: 4px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 40px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .quest-title {
+            font-family: 'Press Start 2P';
+            color: var(--quest-gold);
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        .quest-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-family: 'Rajdhani', monospace;
+            font-size: 1.1rem;
+            color: #ccc;
+            transition: 0.3s;
+        }
+
+        .quest-item.completed {
+            color: #555;
+            text-decoration: line-through;
+        }
+
+        .quest-checkbox {
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border: 2px solid var(--p1-color);
+            margin-right: 15px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quest-checkbox:checked {
+            background: var(--p1-color);
+        }
+
+        .quest-checkbox:checked::after {
+            content: '✔';
+            color: #000;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
         /* --- MINIGAME SECTION --- */
         .game-area {
             border-top: 1px solid #333;
@@ -288,26 +382,80 @@
             font-family: 'Press Start 2P';
         }
 
+        /* --- CHEAT CODE RAIN --- */
+        .rain-container {
+            position: fixed;
+            top: -50px;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+            display: none;
+            /* Hidden by default */
+        }
+
+        .rain-drop {
+            position: absolute;
+            top: -20px;
+            font-size: 2rem;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
         /* --- MOBILE ADJUSTMENTS --- */
         @media (max-width: 600px) {
-            h1 { font-size: 1.1rem; margin-bottom: 10px; }
-            
-            /* Force [ ACTIVE ] to new line on mobile */
+            h1 {
+                font-size: 1.1rem;
+                margin-bottom: 10px;
+            }
+
             .status-active {
                 display: block;
                 margin-top: 5px;
             }
-            .subtitle { font-size: 0.7rem; letter-spacing: 1px; }
 
-            .big-number, .big-text { font-size: 1.5rem; }
-            .small-time { font-size: 0.65rem; }
+            .subtitle {
+                font-size: 0.7rem;
+                letter-spacing: 1px;
+            }
 
-            .player-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .clock-display { font-size: 1.4rem; }
-            .player-header span, .player-name { font-size: 0.6rem; }
+            .big-number,
+            .big-text {
+                font-size: 1.5rem;
+            }
 
-            #gameCanvas { width: 100%; }
-            .main-hub { padding-top: 20px; }
+            .small-time {
+                font-size: 0.65rem;
+            }
+
+            .player-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .clock-display {
+                font-size: 1.4rem;
+            }
+
+            .player-header span,
+            .player-name {
+                font-size: 0.6rem;
+            }
+
+            #gameCanvas {
+                width: 100%;
+            }
+
+            .main-hub {
+                padding-top: 20px;
+            }
         }
     </style>
 </head>
@@ -319,8 +467,10 @@
         <span>🕷️</span> <span>🗡️</span> <span>🖤</span> <span>👾</span>
     </div>
 
+    <div id="rain-box" class="rain-container"></div>
+
     <div class="main-hub">
-        <h1>Server: E & L</h1>
+        <h1 onclick="triggerMobileCheat()">Server: E & L</h1>
 
         <div class="subtitle">
             CO-OP CAMPAIGN STATUS: <span class="status-active">[ ACTIVE ]</span>
@@ -363,8 +513,39 @@
             <button class="loot-btn" onclick="dropLoot()" style="margin-bottom: 0;">🎁 OPEN DAILY LOOT</button>
 
             <a href="comfort.html" style="text-decoration: none;">
-                <button class="loot-btn" style="border-color: #ff2a6d; color: #ff2a6d;">♥ ACTIVATE COMFORT PROTOCOL ♥</button> 
+                <button class="loot-btn" style="border-color: #ff2a6d; color: #ff2a6d;">♥ ACTIVATE COMFORT PROTOCOL
+                    ♥</button>
             </a>
+
+            <a href="boss.html" style="text-decoration: none;">
+                <button class="loot-btn" style="border-color: #fff; color: #fff; margin-top: 10px;">
+                    ⚠️ CHALLENGE THE DISTANCE ⚠️
+                </button>
+            </a>
+        </div>
+
+        <div class="quest-box">
+            <div class="quest-title">📜 Active Quest Log</div>
+
+            <div class="quest-item">
+                <input type="checkbox" class="quest-checkbox" disabled>
+                <span>🛡️ Main Quest: Close the Distance</span>
+            </div>
+
+            <div class="quest-item">
+                <input type="checkbox" class="quest-checkbox" id="q1" onchange="toggleQuest('q1')">
+                <span>💧 Daily: Drink Water Check</span>
+            </div>
+
+            <div class="quest-item">
+                <input type="checkbox" class="quest-checkbox" id="q2" onchange="toggleQuest('q2')">
+                <span>📞 Daily: Call / Voice Message</span>
+            </div>
+
+            <div class="quest-item">
+                <input type="checkbox" class="quest-checkbox" id="q3" onchange="toggleQuest('q3')">
+                <span>📸 Side Quest: Send a Cute Pic</span>
+            </div>
         </div>
 
         <div class="game-area">
@@ -380,69 +561,36 @@
         const startDate = new Date('2025-11-16T00:00:00');
         const herTimeZone = 'America/New_York';
 
-        // --- LOOT (MASSIVE UPDATE) ---
+        // --- LOOT (MASSIVE LIST) ---
         const lootTable = [
-            // --- CUTE & ROMANTIC ---
-            "Item Acquired: 1x Big Hug 🫂",
-            "Critical Hit! You look amazing today 🖤",
-            "Quest Added: Call Elliot 📞",
-            "Item: 'I Love You' Coupon (Redeemable anytime)",
-            "Status: Thinking about you... 💭",
-            "Inventory: +1 Kiss 💋",
-            "Reminder: We make a great team 🎮",
-            "Drop: Virtual Forehead Kiss",
-            "Achievement: Woke up cute today",
-            "System: I miss you more than my PC",
-            "Buff: +50 Happiness applied",
-            "Note: You are my Player 2 for life",
-            "Reward: 1x Virtual Hoodie (Smells like me)",
-            "Status Effect: 'Love-struck' is active",
-            "Drop: 1000 Headpats",
-            "Message: Stop being so pretty (jk don't stop)",
-            "Daily Reward: I love you so much",
-            "Unlock: Secret Snack Stash (When I visit)",
-            "Ping: 0ms (My heart is right there)",
-            "Loot: One (1) Aggressive Hug",
-            "Alert: You are the best girlfriend ever",
-            "Notice: I am obsessed with you. Period.",
-            "Drop: Infinite Cuddle Voucher",
-            "System: You are my favorite notification",
-            "Message: <3 <3 <3",
-            
-            // --- GAMER & GOTH ---
-            "Nerf: Distance is OP today, pls nerf",
-            "Drop: Legendary Item [My Heart]",
-            "Summoning: One sleepy boyfriend...",
-            "System: Connection to heart established",
-            "Buff: Infinite Patience for Lag",
-            "Patch Note: You just got cuter in v2.0",
-            "Status: Simping for Lou",
-            "Achievement: Stole my hoodie (Remotely)",
-            "Quest: Defeat the 'Sadness' Boss",
-            "Loot Box: Contains 100% pure love",
-            "Warning: Excessive cuteness detected",
-            "Skill Unlocked: Making me smile instantly",
-            "Drop: Protection Charm against bad days",
-            "The Void stares back and sends a kiss",
-            "Bat Signal Received: Sending love 🦇",
-            "Message: You look goth and gorgeous",
-            "Critical Hit! My heart took 9999 damage",
-            "Respawn Point set to: In my arms",
-            
-            // --- FUNNY / LDR ---
-            "Quest: Drink water or I will cry",
-            "Reminder: Check your posture, gamer",
-            "Quest: Eat something yummy right now",
-            "Loading... Kiss sent successfully",
-            "Error 404: Too far away (Fixing soon...)",
-            "Quest: Send a selfie (Optional but encouraged)",
-            "Drop: Get out of chores card",
-            "System: Brain is 90% thinking about you",
-            "Loot: 1x Back scratch (Redeemable in person)",
-            "Alert: Missing Player 2",
-            "Status: Currently 100% committed",
-            "Event: Movie night coupon generated",
-            "Achievement: Surviving another day without me"
+            "Item Acquired: 1x Big Hug 🫂", "Critical Hit! You look amazing today 🖤",
+            "Quest Added: Call Elliot 📞", "Item: 'I Love You' Coupon (Redeemable anytime)",
+            "Status: Thinking about you... 💭", "Inventory: +1 Kiss 💋",
+            "Reminder: We make a great team 🎮", "Drop: Virtual Forehead Kiss",
+            "Achievement: Woke up cute today", "System: I miss you more than my PC",
+            "Buff: +50 Happiness applied", "Note: You are my Player 2 for life",
+            "Reward: 1x Virtual Hoodie (Smells like me)", "Status Effect: 'Love-struck' is active",
+            "Drop: 1000 Headpats", "Message: Stop being so pretty (jk don't stop)",
+            "Daily Reward: I love you so much", "Unlock: Secret Snack Stash (When I visit)",
+            "Ping: 0ms (My heart is right there)", "Loot: One (1) Aggressive Hug",
+            "Alert: You are the best girlfriend ever", "Notice: I am obsessed with you. Period.",
+            "Drop: Infinite Cuddle Voucher", "System: You are my favorite notification",
+            "Message: <3 <3 <3", "Nerf: Distance is OP today, pls nerf",
+            "Drop: Legendary Item [My Heart]", "Summoning: One sleepy boyfriend...",
+            "System: Connection to heart established", "Buff: Infinite Patience for Lag",
+            "Patch Note: You just got cuter in v2.0", "Status: Simping for Lou",
+            "Achievement: Stole my hoodie (Remotely)", "Quest: Defeat the 'Sadness' Boss",
+            "Loot Box: Contains 100% pure love", "Warning: Excessive cuteness detected",
+            "Skill Unlocked: Making me smile instantly", "Drop: Protection Charm against bad days",
+            "The Void stares back and sends a kiss", "Bat Signal Received: Sending love 🦇",
+            "Message: You look goth and gorgeous", "Critical Hit! My heart took 9999 damage",
+            "Respawn Point set to: In my arms", "Quest: Drink water or I will cry",
+            "Reminder: Check your posture, gamer", "Quest: Eat something yummy right now",
+            "Loading... Kiss sent successfully", "Error 404: Too far away (Fixing soon...)",
+            "Quest: Send a selfie (Optional but encouraged)", "Drop: Get out of chores card",
+            "System: Brain is 90% thinking about you", "Loot: 1x Back scratch (Redeemable in person)",
+            "Alert: Missing Player 2", "Status: Currently 100% committed",
+            "Event: Movie night coupon generated", "Achievement: Surviving another day without me"
         ];
 
         function updateSystem() {
@@ -474,6 +622,83 @@
         setInterval(updateSystem, 1000);
         updateSystem();
 
+        // --- QUEST LOG LOGIC (SAVES TO BROWSER) ---
+        function toggleQuest(id) {
+            const checkbox = document.getElementById(id);
+            const parent = checkbox.parentElement;
+
+            if (checkbox.checked) {
+                parent.classList.add('completed');
+                localStorage.setItem(id, 'done');
+            } else {
+                parent.classList.remove('completed');
+                localStorage.removeItem(id);
+            }
+        }
+
+        // Load Quest State on Start
+        window.addEventListener('load', () => {
+            ['q1', 'q2', 'q3'].forEach(id => {
+                if (localStorage.getItem(id) === 'done') {
+                    document.getElementById(id).checked = true;
+                    document.getElementById(id).parentElement.classList.add('completed');
+                }
+            });
+        });
+
+        // --- CHEAT CODE LOGIC ---
+        // 1. Desktop: Type "LOVE"
+        let keySequence = [];
+        const secretCode = "love";
+
+        document.addEventListener('keydown', (e) => {
+            keySequence.push(e.key.toLowerCase());
+            if (keySequence.length > secretCode.length) keySequence.shift();
+
+            if (keySequence.join('') === secretCode) {
+                triggerRain();
+            }
+        });
+
+        // 2. Mobile: Tap Title 5 times
+        let tapCount = 0;
+        let tapTimer;
+        function triggerMobileCheat() {
+            tapCount++;
+            clearTimeout(tapTimer);
+            tapTimer = setTimeout(() => { tapCount = 0; }, 1000); // Reset if too slow
+
+            if (tapCount === 5) {
+                triggerRain();
+                tapCount = 0;
+            }
+        }
+
+        // RAIN EFFECT
+        function triggerRain() {
+            const rainBox = document.getElementById('rain-box');
+            rainBox.style.display = 'block';
+
+            const emojis = ['❤️', '🖤', '👾', '🎮', '💀', '💋'];
+
+            for (let i = 0; i < 50; i++) {
+                const drop = document.createElement('div');
+                drop.classList.add('rain-drop');
+                drop.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                drop.style.left = Math.random() * 100 + 'vw';
+                drop.style.animationDuration = (Math.random() * 2 + 1) + 's'; // 1-3s fall speed
+                drop.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+
+                rainBox.appendChild(drop);
+
+                // Cleanup
+                setTimeout(() => drop.remove(), 4000);
+            }
+
+            // Hide container after animation
+            setTimeout(() => rainBox.style.display = 'none', 4000);
+        }
+
         // --- MINIGAME ---
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -483,13 +708,11 @@
 
         let gameRunning = false;
         let score = 0;
-        
+
         // --- MOBILE TURBO MODE ---
         let isMobile = window.innerWidth < 600;
-        
-        // Settings for "Feeling Fast"
-        let speed = isMobile ? 14 : 6; 
-        let gravity = isMobile ? 0.9 : 0.5; 
+        let speed = isMobile ? 14 : 6;
+        let gravity = isMobile ? 0.9 : 0.5;
         let jumpPower = isMobile ? -13 : -10;
 
         let player = { x: 50, y: 100, w: 20, h: 20, dy: 0, jumpPower: jumpPower, grounded: true };
@@ -506,10 +729,9 @@
 
         function drawObstacles() {
             obstacles.forEach(obs => {
-                // Different colors for different obstacle types
-                if (obs.type === 'fly') ctx.fillStyle = '#ff2a6d'; // Red Glitch
-                else if (obs.type === 'wide') ctx.fillStyle = '#00ff41'; // Green Firewall
-                else ctx.fillStyle = '#b026ff'; // Purple Standard
+                if (obs.type === 'fly') ctx.fillStyle = '#ff2a6d';
+                else if (obs.type === 'wide') ctx.fillStyle = '#00ff41';
+                else ctx.fillStyle = '#b026ff';
 
                 ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
             });
@@ -529,29 +751,18 @@
             }
 
             frame++;
-            // Spawn very frequently on mobile because obstacles move so fast
             let spawnRate = isMobile ? 40 : 90;
 
-            if (frame % spawnRate === 0) { 
+            if (frame % spawnRate === 0) {
                 let typeSeed = Math.random();
                 let newObs = { x: canvas.width, y: 110, w: 20, h: 20, type: 'std' };
 
                 if (typeSeed > 0.7) {
-                    // Type: Flying Glitch (Red) - Higher up
-                    newObs.type = 'fly';
-                    newObs.y = 90; // Floating
-                    newObs.h = 15;
-                    newObs.w = 15;
+                    newObs.type = 'fly'; newObs.y = 90; newObs.h = 15; newObs.w = 15;
                 } else if (typeSeed > 0.4) {
-                    // Type: Wide Firewall (Green) - Low but wide
-                    newObs.type = 'wide';
-                    newObs.y = 115;
-                    newObs.w = 30; // Wider
-                    newObs.h = 15; // Shorter
+                    newObs.type = 'wide'; newObs.y = 115; newObs.w = 30; newObs.h = 15;
                 } else {
-                    // Type: Standard Spike (Purple)
-                    newObs.y = 110;
-                    newObs.h = 20;
+                    newObs.y = 110; newObs.h = 20;
                 }
                 obstacles.push(newObs);
             }
@@ -559,11 +770,7 @@
             obstacles.forEach((obs, index) => {
                 obs.x -= speed;
 
-                // Collision Logic
-                if (player.x < obs.x + obs.w &&
-                    player.x + player.w > obs.x &&
-                    player.y < obs.y + obs.h &&
-                    player.h + player.y > obs.y) {
+                if (player.x < obs.x + obs.w && player.x + player.w > obs.x && player.y < obs.y + obs.h && player.h + player.y > obs.y) {
                     gameOver();
                 }
 
@@ -617,19 +824,14 @@
             updateGame();
         }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') { e.preventDefault(); jump(); }
-        });
-        canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault(); jump();
-        });
-        canvas.addEventListener('mousedown', (e) => {
-            e.preventDefault(); jump();
-        });
+        document.addEventListener('keydown', (e) => { if (e.code === 'Space') { e.preventDefault(); jump(); } });
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); });
+        canvas.addEventListener('mousedown', (e) => { e.preventDefault(); jump(); });
 
         ctx.fillStyle = '#fff';
         ctx.font = '12px "Press Start 2P"';
         ctx.fillText("CLICK TO START", 230, 80);
     </script>
 </body>
+
 </html>
