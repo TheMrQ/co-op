@@ -128,6 +128,7 @@
             line-height: 1.8;
         }
 
+        /* --- STATUS STYLES --- */
         .status-active {
             color: var(--active-green);
             text-shadow: 0 0 10px rgba(0, 255, 65, 0.6);
@@ -142,6 +143,25 @@
 
             to {
                 text-shadow: 0 0 20px rgba(0, 255, 65, 1);
+                opacity: 1;
+            }
+        }
+
+        /* NEW: PATCHING STATUS (YELLOW) */
+        .status-patching {
+            color: #ffeb3b; /* Bright Yellow */
+            text-shadow: 0 0 10px rgba(255, 235, 59, 0.6);
+            animation: pulseYellow 1.5s infinite alternate;
+        }
+
+        @keyframes pulseYellow {
+            from {
+                text-shadow: 0 0 5px rgba(255, 235, 59, 0.4);
+                opacity: 0.8;
+            }
+
+            to {
+                text-shadow: 0 0 20px rgba(255, 235, 59, 1);
                 opacity: 1;
             }
         }
@@ -416,7 +436,7 @@
                 margin-bottom: 10px;
             }
 
-            .status-active {
+            .status-active, .status-patching {
                 display: block;
                 margin-top: 5px;
             }
@@ -473,8 +493,8 @@
         <h1 onclick="triggerMobileCheat()">Server: E & L</h1>
 
         <div class="subtitle">
-            CO-OP CAMPAIGN STATUS: <span class="status-active">[ ACTIVE ]</span>
-        </div>
+            CO-OP CAMPAIGN STATUS: <span class="status-patching">[ PATCHING ]</span>
+            </div>
 
         <div class="uptime-container">
             <span class="uptime-label">🎮 Total Playtime Together 🎮</span>
@@ -649,7 +669,7 @@
         // --- CHEAT CODE LOGIC ---
         // 1. Desktop: Type "LOVE"
         let keySequence = [];
-        const secretCode = "lou";
+        const secretCode = "love";
 
         document.addEventListener('keydown', (e) => {
             keySequence.push(e.key.toLowerCase());
@@ -835,5 +855,3 @@
 </body>
 
 </html>
-
-
