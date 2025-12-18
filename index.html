@@ -15,15 +15,13 @@
             --bg-deep: #050505;
             --panel-bg: rgba(20, 20, 20, 0.9);
             --border-color: #333;
-            --p1-color: #00f3ff;
-            /* Elliot (Cyan) */
-            --p2-color: #b026ff;
-            /* Lou (Purple) */
+            --p1-color: #00f3ff; /* Elliot */
+            --p2-color: #b026ff; /* Lou */
             --text-main: #fff;
             --text-dim: #888;
             --active-green: #00ff41;
-            /* Neon Green */
             --quest-gold: #ffd700;
+            --anniversary-gold: #ffeb3b; /* New Gold Color */
         }
 
         body {
@@ -44,24 +42,16 @@
         }
 
         @keyframes bgPulse {
-            0% {
-                background-size: 100% 100%;
-            }
-
-            100% {
-                background-size: 120% 120%;
-            }
+            0% { background-size: 100% 100%; }
+            100% { background-size: 120% 120%; }
         }
 
         /* --- BACKGROUND ANIMATION --- */
         .emoji-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0;
-            opacity: 0.08;
+            opacity: 0.1; /* Slightly brighter for the party */
             pointer-events: none;
             font-size: 4rem;
             display: flex;
@@ -81,17 +71,9 @@
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-20px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
         }
 
         .main-hub {
@@ -105,7 +87,7 @@
         h1 {
             font-family: 'Press Start 2P', cursive;
             font-size: 1.8rem;
-            margin-bottom: 15px;
+            margin-bottom: 5px; /* Reduced margin for banner */
             text-transform: uppercase;
             letter-spacing: 2px;
             background: -webkit-linear-gradient(0deg, var(--p1-color), #fff, var(--p2-color));
@@ -114,8 +96,26 @@
             text-shadow: 0 0 20px rgba(176, 38, 255, 0.5);
             line-height: 1.5;
             cursor: pointer;
-            /* Hint that it's clickable */
             user-select: none;
+        }
+
+        /* --- ANNIVERSARY BANNER --- */
+        .anniversary-banner {
+            font-family: 'Press Start 2P';
+            color: var(--anniversary-gold);
+            font-size: 0.7rem;
+            margin-bottom: 25px;
+            padding: 10px;
+            border: 2px solid var(--anniversary-gold);
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            animation: glowGold 2s infinite alternate;
+        }
+
+        @keyframes glowGold {
+            from { box-shadow: 0 0 5px rgba(255, 215, 0, 0.2); }
+            to { box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
         }
 
         .subtitle {
@@ -128,7 +128,6 @@
             line-height: 1.8;
         }
 
-        /* --- STATUS STYLES --- */
         .status-active {
             color: var(--active-green);
             text-shadow: 0 0 10px rgba(0, 255, 65, 0.6);
@@ -136,34 +135,8 @@
         }
 
         @keyframes pulseGreen {
-            from {
-                text-shadow: 0 0 5px rgba(0, 255, 65, 0.4);
-                opacity: 0.8;
-            }
-
-            to {
-                text-shadow: 0 0 20px rgba(0, 255, 65, 1);
-                opacity: 1;
-            }
-        }
-
-        /* NEW: PATCHING STATUS (YELLOW) */
-        .status-patching {
-            color: #ffeb3b; /* Bright Yellow */
-            text-shadow: 0 0 10px rgba(255, 235, 59, 0.6);
-            animation: pulseYellow 1.5s infinite alternate;
-        }
-
-        @keyframes pulseYellow {
-            from {
-                text-shadow: 0 0 5px rgba(255, 235, 59, 0.4);
-                opacity: 0.8;
-            }
-
-            to {
-                text-shadow: 0 0 20px rgba(255, 235, 59, 1);
-                opacity: 1;
-            }
+            from { text-shadow: 0 0 5px rgba(0, 255, 65, 0.4); opacity: 0.8; }
+            to { text-shadow: 0 0 20px rgba(0, 255, 65, 1); opacity: 1; }
         }
 
         /* --- UPTIME TRACKER --- */
@@ -219,9 +192,7 @@
             margin-top: 10px;
         }
 
-        .small-num {
-            color: var(--p2-color);
-        }
+        .small-num { color: var(--p2-color); }
 
         /* --- PLAYER CARDS --- */
         .player-grid {
@@ -241,43 +212,23 @@
             border-bottom-style: solid;
         }
 
-        .player-card.p1 {
-            border-bottom-color: var(--p1-color);
-        }
-
-        .player-card.p2 {
-            border-bottom-color: var(--p2-color);
-        }
+        .player-card.p1 { border-bottom-color: var(--p1-color); }
+        .player-card.p2 { border-bottom-color: var(--p2-color); }
 
         .player-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 8px;
+            display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;
         }
 
-        .player-header span,
-        .player-name {
-            font-family: 'Press Start 2P';
-            font-size: 0.9rem;
-            color: #fff;
-            line-height: 1;
+        .player-header span, .player-name {
+            font-family: 'Press Start 2P'; font-size: 0.9rem; color: #fff; line-height: 1;
         }
 
         .location-tag {
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
+            font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px;
         }
 
         .clock-display {
-            font-size: 1.8rem;
-            font-weight: 700;
-            font-family: 'Rajdhani', monospace;
-            color: #fff;
+            font-size: 1.8rem; font-weight: 700; font-family: 'Rajdhani', monospace; color: #fff;
         }
 
         /* --- LOOT SECTION --- */
@@ -295,187 +246,84 @@
         }
 
         .loot-btn:hover {
-            background: var(--p2-color);
-            color: #000;
-            box-shadow: 0 0 25px rgba(176, 38, 255, 0.6);
-            transform: scale(1.05);
+            background: var(--p2-color); color: #000; box-shadow: 0 0 25px rgba(176, 38, 255, 0.6); transform: scale(1.05);
         }
 
         #loot-result {
-            margin-top: 10px;
-            margin-bottom: 20px;
-            min-height: 20px;
-            color: var(--p1-color);
-            font-family: 'Rajdhani', monospace;
-            font-size: 1.2rem;
-            font-weight: bold;
+            margin-top: 10px; margin-bottom: 20px; min-height: 20px; color: var(--p1-color);
+            font-family: 'Rajdhani', monospace; font-size: 1.2rem; font-weight: bold;
         }
 
-        /* --- QUEST LOG (NEW FEATURE) --- */
+        /* --- QUEST LOG --- */
         .quest-box {
-            background: #000;
-            border: 2px solid var(--text-dim);
-            border-radius: 4px;
-            padding: 20px;
-            text-align: left;
-            margin-bottom: 40px;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+            background: #000; border: 2px solid var(--text-dim); border-radius: 4px;
+            padding: 20px; text-align: left; margin-bottom: 40px; box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
         }
 
         .quest-title {
-            font-family: 'Press Start 2P';
-            color: var(--quest-gold);
-            font-size: 0.8rem;
-            margin-bottom: 20px;
-            text-align: center;
-            text-transform: uppercase;
+            font-family: 'Press Start 2P'; color: var(--quest-gold); font-size: 0.8rem;
+            margin-bottom: 20px; text-align: center; text-transform: uppercase;
             text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
         }
 
         .quest-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-            font-family: 'Rajdhani', monospace;
-            font-size: 1.1rem;
-            color: #ccc;
-            transition: 0.3s;
+            display: flex; align-items: center; margin-bottom: 12px;
+            font-family: 'Rajdhani', monospace; font-size: 1.1rem; color: #ccc; transition: 0.3s;
         }
 
-        .quest-item.completed {
-            color: #555;
-            text-decoration: line-through;
-        }
+        .quest-item.completed { color: #555; text-decoration: line-through; }
 
         .quest-checkbox {
-            appearance: none;
-            width: 15px;
-            height: 15px;
-            border: 2px solid var(--p1-color);
-            margin-right: 15px;
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            appearance: none; width: 15px; height: 15px; border: 2px solid var(--p1-color);
+            margin-right: 15px; cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center;
         }
 
-        .quest-checkbox:checked {
-            background: var(--p1-color);
-        }
-
-        .quest-checkbox:checked::after {
-            content: '✔';
-            color: #000;
-            font-size: 10px;
-            font-weight: bold;
-        }
+        .quest-checkbox:checked { background: var(--p1-color); }
+        .quest-checkbox:checked::after { content: '✔'; color: #000; font-size: 10px; font-weight: bold; }
 
         /* --- MINIGAME SECTION --- */
         .game-area {
-            border-top: 1px solid #333;
-            padding-top: 30px;
-            width: 100%;
+            border-top: 1px solid #333; padding-top: 30px; width: 100%;
         }
 
         .game-title {
-            font-family: 'Press Start 2P';
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            margin-bottom: 15px;
+            font-family: 'Press Start 2P'; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 15px;
         }
 
         #gameCanvas {
-            background: #000;
-            border: 2px solid var(--p1-color);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
-            display: block;
-            margin: 0 auto;
-            border-radius: 4px;
-            cursor: pointer;
+            background: #000; border: 2px solid var(--p1-color); box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+            display: block; margin: 0 auto; border-radius: 4px; cursor: pointer;
         }
 
         .game-msg {
-            margin-top: 10px;
-            font-size: 0.8rem;
-            color: #666;
-            font-family: 'Press Start 2P';
+            margin-top: 10px; font-size: 0.8rem; color: #666; font-family: 'Press Start 2P';
         }
 
         /* --- CHEAT CODE RAIN --- */
         .rain-container {
-            position: fixed;
-            top: -50px;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 9999;
-            overflow: hidden;
-            display: none;
-            /* Hidden by default */
+            position: fixed; top: -50px; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9999; overflow: hidden; display: none;
         }
 
         .rain-drop {
-            position: absolute;
-            top: -20px;
-            font-size: 2rem;
-            animation: fall linear forwards;
+            position: absolute; top: -20px; font-size: 2rem; animation: fall linear forwards;
         }
 
-        @keyframes fall {
-            to {
-                transform: translateY(110vh) rotate(360deg);
-            }
-        }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
         /* --- MOBILE ADJUSTMENTS --- */
         @media (max-width: 600px) {
-            h1 {
-                font-size: 1.1rem;
-                margin-bottom: 10px;
-            }
-
-            .status-active, .status-patching {
-                display: block;
-                margin-top: 5px;
-            }
-
-            .subtitle {
-                font-size: 0.7rem;
-                letter-spacing: 1px;
-            }
-
-            .big-number,
-            .big-text {
-                font-size: 1.5rem;
-            }
-
-            .small-time {
-                font-size: 0.65rem;
-            }
-
-            .player-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-
-            .clock-display {
-                font-size: 1.4rem;
-            }
-
-            .player-header span,
-            .player-name {
-                font-size: 0.6rem;
-            }
-
-            #gameCanvas {
-                width: 100%;
-            }
-
-            .main-hub {
-                padding-top: 20px;
-            }
+            h1 { font-size: 1.1rem; margin-bottom: 10px; }
+            .status-active { display: block; margin-top: 5px; }
+            .subtitle { font-size: 0.7rem; letter-spacing: 1px; }
+            .big-number, .big-text { font-size: 1.5rem; }
+            .small-time { font-size: 0.65rem; }
+            .player-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .clock-display { font-size: 1.4rem; }
+            .player-header span, .player-name { font-size: 0.6rem; }
+            #gameCanvas { width: 100%; }
+            .main-hub { padding-top: 20px; }
+            .anniversary-banner { font-size: 0.6rem; padding: 8px; }
         }
     </style>
 </head>
@@ -483,8 +331,8 @@
 <body>
 
     <div class="emoji-bg">
-        <span>🖤</span> <span>👾</span> <span>💀</span> <span>🎮</span>
-        <span>🕷️</span> <span>🗡️</span> <span>🖤</span> <span>👾</span>
+        <span>🎉</span> <span>🥳</span> <span>💖</span> <span>🎂</span>
+        <span>🍾</span> <span>💑</span> <span>🎉</span> <span>🎮</span>
     </div>
 
     <div id="rain-box" class="rain-container"></div>
@@ -492,9 +340,11 @@
     <div class="main-hub">
         <h1 onclick="triggerMobileCheat()">Server: E & L</h1>
 
+        <div class="anniversary-banner">✨ ACHIEVEMENT: 1 MONTH TOGETHER ✨</div>
+
         <div class="subtitle">
-            CO-OP CAMPAIGN STATUS: <span class="status-patching">[ PATCHING ]</span>
-            </div>
+            CO-OP CAMPAIGN STATUS: <span class="status-active">[ ACTIVE ]</span>
+        </div>
 
         <div class="uptime-container">
             <span class="uptime-label">🎮 Total Playtime Together 🎮</span>
@@ -530,16 +380,15 @@
         <div id="loot-result"></div>
 
         <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-bottom: 40px;">
-            <button class="loot-btn" onclick="dropLoot()" style="margin-bottom: 0;">🎁 OPEN DAILY LOOT</button>
+            <button class="loot-btn" onclick="dropLoot()" style="margin-bottom: 0;">🎁 OPEN 1-MONTH GIFT</button>
 
             <a href="comfort.html" style="text-decoration: none;">
-                <button class="loot-btn" style="border-color: #ff2a6d; color: #ff2a6d;">♥ ACTIVATE COMFORT PROTOCOL
-                    ♥</button>
+                <button class="loot-btn" style="border-color: #ff2a6d; color: #ff2a6d;">♥ ACTIVATE COMFORT PROTOCOL ♥</button>
             </a>
 
             <a href="boss.html" style="text-decoration: none;">
                 <button class="loot-btn" style="border-color: #fff; color: #fff; margin-top: 10px;">
-                    ⚠️ ??? ⚠️
+                    ⚠️ CHALLENGE THE DISTANCE ⚠️
                 </button>
             </a>
         </div>
@@ -583,6 +432,7 @@
 
         // --- LOOT (MASSIVE LIST) ---
         const lootTable = [
+            "🏆 CRITICAL SUCCESS: Happy 1 Month Anniversary! I love you! 💖",
             "Item Acquired: 1x Big Hug 🫂", "Critical Hit! You look amazing today 🖤",
             "Quest Added: Call Elliot 📞", "Item: 'I Love You' Coupon (Redeemable anytime)",
             "Status: Thinking about you... 💭", "Inventory: +1 Kiss 💋",
@@ -634,9 +484,20 @@
             document.getElementById('clock-us').innerText = now.toLocaleTimeString('en-US', { ...timeOpt, timeZone: herTimeZone });
         }
 
+        // ANNIVERSARY: Force first loot to be special
+        let firstLoot = true;
         function dropLoot() {
             const resultBox = document.getElementById('loot-result');
-            const randomItem = lootTable[Math.floor(Math.random() * lootTable.length)];
+            let randomItem;
+            
+            if(firstLoot) {
+                randomItem = "🏆 CRITICAL SUCCESS: Happy 1 Month Anniversary! I love you! 💖";
+                firstLoot = false;
+                triggerRain(); // Confetti trigger
+            } else {
+                randomItem = lootTable[Math.floor(Math.random() * lootTable.length)];
+            }
+            
             resultBox.innerText = randomItem;
         }
         setInterval(updateSystem, 1000);
@@ -694,12 +555,12 @@
             }
         }
 
-        // RAIN EFFECT
+        // RAIN EFFECT (UPDATED FOR ANNIVERSARY)
         function triggerRain() {
             const rainBox = document.getElementById('rain-box');
             rainBox.style.display = 'block';
 
-            const emojis = ['❤️', '🖤', '👾', '🎮', '💀', '💋'];
+            const emojis = ['🎉', '💖', '🥳', '🎂', '🖤', '👾'];
 
             for (let i = 0; i < 50; i++) {
                 const drop = document.createElement('div');
