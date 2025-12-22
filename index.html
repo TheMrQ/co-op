@@ -4,24 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Elliot & Lou 🖤</title>
+    <title>Elliot & Lou 🎄</title>
     <link rel="icon" type="image/png" href="delta.png">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Press+Start+2P&display=swap"
         rel="stylesheet">
 
     <style>
-        /* --- THEME CONFIG --- */
+        /* --- THEME CONFIGURATION --- */
         :root {
+            /* DEFAULT THEME (Keep this for later) */
+            /*
             --bg-deep: #050505;
+            --p1-color: #00f3ff; 
+            --p2-color: #b026ff;
+            --active-green: #00ff41;
+            */
+
+            /* CHRISTMAS THEME (Active) */
+            --bg-deep: #0a0f0a;
             --panel-bg: rgba(20, 20, 20, 0.9);
             --border-color: #333;
-            --p1-color: #00f3ff; /* Elliot */
-            --p2-color: #b026ff; /* Lou */
+            --p1-color: #ff3333; /* Elliot (Red) */
+            --p2-color: #00ff88; /* Lou (Green) */
             --text-main: #fff;
-            --text-dim: #888;
-            --active-green: #00ff41;
+            --text-dim: #aaa;
+            --active-green: #ffeb3b; /* Gold Star Color */
             --quest-gold: #ffd700;
-            --anniversary-gold: #ffeb3b;
         }
 
         body {
@@ -37,7 +45,8 @@
             overflow-x: hidden;
             position: relative;
             touch-action: manipulation;
-            background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, #050505 100%);
+            /* Christmas Gradient */
+            background: radial-gradient(circle at 50% 50%, #1a2e1a 0%, #050505 100%);
             animation: bgPulse 10s infinite alternate;
         }
 
@@ -46,14 +55,14 @@
             100% { background-size: 120% 120%; }
         }
 
-        /* --- BACKGROUND ANIMATION --- */
+        /* --- BACKGROUND ANIMATION (SNOW) --- */
         .emoji-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0;
-            opacity: 0.1;
+            opacity: 0.15;
             pointer-events: none;
-            font-size: 4rem;
+            font-size: 3rem;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
@@ -62,18 +71,18 @@
         }
 
         .emoji-bg span {
-            animation: float 6s ease-in-out infinite;
+            animation: float 10s linear infinite; /* Slower, linear fall for snow feel */
         }
 
         .emoji-bg span:nth-child(even) {
-            animation-duration: 8s;
-            animation-delay: 1s;
+            animation-duration: 12s;
+            animation-delay: 2s;
         }
 
         @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
         }
 
         .main-hub {
@@ -93,29 +102,24 @@
             background: -webkit-linear-gradient(0deg, var(--p1-color), #fff, var(--p2-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(176, 38, 255, 0.5);
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
             line-height: 1.5;
             cursor: pointer;
             user-select: none;
         }
 
-        /* --- ANNIVERSARY BANNER --- */
-        .anniversary-banner {
+        /* --- HOLIDAY BANNER --- */
+        .holiday-banner {
             font-family: 'Press Start 2P';
-            color: var(--anniversary-gold);
-            font-size: 0.7rem;
+            color: #fff;
+            font-size: 0.65rem;
             margin-bottom: 25px;
-            padding: 10px;
-            border: 2px solid var(--anniversary-gold);
-            background: rgba(255, 215, 0, 0.1);
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-            animation: glowGold 2s infinite alternate;
-        }
-
-        @keyframes glowGold {
-            from { box-shadow: 0 0 5px rgba(255, 215, 0, 0.2); }
-            to { box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+            padding: 8px 15px;
+            border: 2px solid var(--p1-color);
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 50px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+            display: inline-block;
         }
 
         .subtitle {
@@ -130,13 +134,13 @@
 
         .status-active {
             color: var(--active-green);
-            text-shadow: 0 0 10px rgba(0, 255, 65, 0.6);
-            animation: pulseGreen 1.5s infinite alternate;
+            text-shadow: 0 0 10px rgba(255, 235, 59, 0.6);
+            animation: pulseGreen 2s infinite alternate;
         }
 
         @keyframes pulseGreen {
-            from { text-shadow: 0 0 5px rgba(0, 255, 65, 0.4); opacity: 0.8; }
-            to { text-shadow: 0 0 20px rgba(0, 255, 65, 1); opacity: 1; }
+            from { opacity: 0.7; }
+            to { opacity: 1; text-shadow: 0 0 20px var(--active-green); }
         }
 
         /* --- UPTIME TRACKER --- */
@@ -146,7 +150,7 @@
             padding: 30px;
             border-radius: 12px;
             margin-bottom: 30px;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
             backdrop-filter: blur(5px);
         }
 
@@ -241,12 +245,12 @@
             font-size: 0.8rem;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 0 10px rgba(176, 38, 255, 0.2);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
             margin-bottom: 40px;
         }
 
         .loot-btn:hover {
-            background: var(--p2-color); color: #000; box-shadow: 0 0 25px rgba(176, 38, 255, 0.6); transform: scale(1.05);
+            background: var(--p2-color); color: #000; box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); transform: scale(1.05);
         }
 
         #loot-result {
@@ -291,7 +295,7 @@
         }
 
         #gameCanvas {
-            background: #000; border: 2px solid var(--p1-color); box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+            background: #000; border: 2px solid var(--p1-color); box-shadow: 0 0 15px rgba(255, 50, 50, 0.2);
             display: block; margin: 0 auto; border-radius: 4px; cursor: pointer;
         }
 
@@ -299,52 +303,10 @@
             margin-top: 10px; font-size: 0.8rem; color: #666; font-family: 'Press Start 2P';
         }
 
-        /* --- ANNIVERSARY MODAL --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 9999;
-            display: none; align-items: center; justify-content: center;
-            opacity: 0; transition: opacity 1s;
-        }
-
-        .modal-content {
-            background: #111; border: 3px solid var(--anniversary-gold);
-            padding: 40px; border-radius: 20px; text-align: center;
-            width: 80%; max-width: 500px;
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.4);
-            transform: scale(0.8); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative; overflow: hidden;
-        }
-
-        .modal-title {
-            font-family: 'Press Start 2P'; color: var(--anniversary-gold);
-            font-size: 1.5rem; margin-bottom: 20px; line-height: 1.5;
-            text-shadow: 2px 2px 0 #000;
-        }
-
-        .modal-body {
-            font-family: 'Rajdhani', monospace; font-size: 1.2rem; color: #fff;
-            min-height: 100px; margin-bottom: 30px;
-        }
-
-        .close-btn {
-            background: var(--anniversary-gold); color: #000; border: none;
-            padding: 15px 30px; font-family: 'Press Start 2P'; font-size: 0.8rem;
-            cursor: pointer; transition: 0.2s;
-        }
-        .close-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--anniversary-gold); }
-
-        /* Effects */
-        .flash {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: white; z-index: 10000; pointer-events: none;
-            opacity: 0; transition: opacity 0.5s;
-        }
-
         /* --- CHEAT CODE RAIN --- */
         .rain-container {
             position: fixed; top: -50px; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 9998; overflow: hidden; display: none;
+            pointer-events: none; z-index: 9999; overflow: hidden; display: none;
         }
 
         .rain-drop {
@@ -365,28 +327,15 @@
             .player-header span, .player-name { font-size: 0.6rem; }
             #gameCanvas { width: 100%; }
             .main-hub { padding-top: 20px; }
-            .anniversary-banner { font-size: 0.6rem; padding: 8px; }
-            .modal-title { font-size: 1rem; }
         }
     </style>
 </head>
 
 <body>
 
-    <div id="flash-overlay" class="flash"></div>
-
-    <div id="anniversary-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-title">🏆 ACHIEVEMENT UNLOCKED 🏆</div>
-            <div class="modal-title" style="font-size: 0.8rem; color: #fff;">COMPLETED: 1 MONTH</div>
-            <div class="modal-body" id="typewriter-text"></div>
-            <button class="close-btn" onclick="closeModal()">[ CLAIM REWARD: MY HEART ]</button>
-        </div>
-    </div>
-
     <div class="emoji-bg">
-        <span>🎉</span> <span>🥳</span> <span>💖</span> <span>🎂</span>
-        <span>🍾</span> <span>💑</span> <span>🎉</span> <span>🎮</span>
+        <span>❄️</span> <span>🎄</span> <span>🎅</span> <span>🎁</span>
+        <span>⛄</span> <span>❄️</span> <span>🍪</span> <span>🦌</span>
     </div>
 
     <div id="rain-box" class="rain-container"></div>
@@ -394,10 +343,10 @@
     <div class="main-hub">
         <h1 onclick="triggerMobileCheat()">Server: E & L</h1>
 
-        <div class="anniversary-banner">✨ EVENT: 1 MONTH ANNIVERSARY ✨</div>
+        <div class="holiday-banner">🎄 MERRY CHRISTMAS 🎄</div>
 
         <div class="subtitle">
-            CO-OP CAMPAIGN STATUS: <span class="status-active">[ ACTIVE ]</span>
+            CO-OP CAMPAIGN STATUS: <span class="status-active">[ FESTIVE ]</span>
         </div>
 
         <div class="uptime-container">
@@ -434,7 +383,7 @@
         <div id="loot-result"></div>
 
         <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-bottom: 40px;">
-            <button class="loot-btn" onclick="triggerAnniversaryEvent()" style="margin-bottom: 0;">🎁 OPEN 1-MONTH GIFT</button>
+            <button class="loot-btn" onclick="dropLoot()" style="margin-bottom: 0;">🎁 OPEN PRESENT</button>
 
             <a href="comfort.html" style="text-decoration: none;">
                 <button class="loot-btn" style="border-color: #ff2a6d; color: #ff2a6d;">♥ ACTIVATE COMFORT PROTOCOL ♥</button>
@@ -484,50 +433,38 @@
         const startDate = new Date('2025-11-16T00:00:00');
         const herTimeZone = 'America/New_York';
 
-        // --- ANNIVERSARY EVENT LOGIC ---
-        function triggerAnniversaryEvent() {
-            // 1. Flash Screen
-            const flash = document.getElementById('flash-overlay');
-            flash.style.opacity = 1;
-            
-            // 2. Open Modal after flash
-            setTimeout(() => {
-                flash.style.opacity = 0;
-                const modal = document.getElementById('anniversary-modal');
-                modal.style.display = 'flex';
-                // Small delay to allow display:flex to apply before opacity transition
-                setTimeout(() => {
-                    modal.style.opacity = 1;
-                    document.querySelector('.modal-content').style.transform = 'scale(1)';
-                    typeWriter();
-                    triggerRain(); // Confetti background
-                }, 100);
-            }, 500);
-        }
+        // --- LOOT (MASSIVE LIST) ---
+        const lootTable = [
+            "Item Acquired: 1x Big Hug 🫂", "Critical Hit! You look amazing today 🖤",
+            "Quest Added: Call Elliot 📞", "Item: 'I Love You' Coupon (Redeemable anytime)",
+            "Status: Thinking about you... 💭", "Inventory: +1 Kiss 💋",
+            "Reminder: We make a great team 🎮", "Drop: Virtual Forehead Kiss",
+            "Achievement: Woke up cute today", "System: I miss you more than my PC",
+            "Buff: +50 Happiness applied", "Note: You are my Player 2 for life",
+            "Reward: 1x Virtual Hoodie (Smells like me)", "Status Effect: 'Love-struck' is active",
+            "Drop: 1000 Headpats", "Message: Stop being so pretty (jk don't stop)",
+            "Daily Reward: I love you so much", "Unlock: Secret Snack Stash (When I visit)",
+            "Ping: 0ms (My heart is right there)", "Loot: One (1) Aggressive Hug",
+            "Alert: You are the best girlfriend ever", "Notice: I am obsessed with you. Period.",
+            "Drop: Infinite Cuddle Voucher", "System: You are my favorite notification",
+            "Message: <3 <3 <3", "Nerf: Distance is OP today, pls nerf",
+            "Drop: Legendary Item [My Heart]", "Summoning: One sleepy boyfriend...",
+            "System: Connection to heart established", "Buff: Infinite Patience for Lag",
+            "Patch Note: You just got cuter in v2.0", "Status: Simping for Lou",
+            "Achievement: Stole my hoodie (Remotely)", "Quest: Defeat the 'Sadness' Boss",
+            "Loot Box: Contains 100% pure love", "Warning: Excessive cuteness detected",
+            "Skill Unlocked: Making me smile instantly", "Drop: Protection Charm against bad days",
+            "The Void stares back and sends a kiss", "Bat Signal Received: Sending love 🦇",
+            "Message: You look goth and gorgeous", "Critical Hit! My heart took 9999 damage",
+            "Respawn Point set to: In my arms", "Quest: Drink water or I will cry",
+            "Reminder: Check your posture, gamer", "Quest: Eat something yummy right now",
+            "Loading... Kiss sent successfully", "Error 404: Too far away (Fixing soon...)",
+            "Quest: Send a selfie (Optional but encouraged)", "Drop: Get out of chores card",
+            "System: Brain is 90% thinking about you", "Loot: 1x Back scratch (Redeemable in person)",
+            "Alert: Missing Player 2", "Status: Currently 100% committed",
+            "Event: Movie night coupon generated", "Achievement: Surviving another day without me"
+        ];
 
-        function closeModal() {
-            const modal = document.getElementById('anniversary-modal');
-            modal.style.opacity = 0;
-            setTimeout(() => {
-                modal.style.display = 'none';
-                // Show loot text as backup
-                document.getElementById('loot-result').innerText = "Item Acquired: 1 Month Anniversary Badge 🏆";
-            }, 1000);
-        }
-
-        // Typewriter Effect for Modal
-        const messageText = "Happy 1 Month Anniversary! \n\nEvery day with you is my favorite day. Even with the distance, you make me happier than anyone ever has. \n\nI love you so much. \n\n- Elliot";
-        let charIndex = 0;
-        
-        function typeWriter() {
-            if (charIndex < messageText.length) {
-                document.getElementById("typewriter-text").innerHTML += messageText.charAt(charIndex) === '\n' ? '<br>' : messageText.charAt(charIndex);
-                charIndex++;
-                setTimeout(typeWriter, 50); // Speed of typing
-            }
-        }
-
-        // --- STANDARD SYSTEM LOGIC ---
         function updateSystem() {
             const now = new Date();
             const diff = now - startDate;
@@ -547,6 +484,12 @@
             const timeOpt = { hour: '2-digit', minute: '2-digit', hour12: true };
             document.getElementById('clock-vn').innerText = now.toLocaleTimeString('en-US', { ...timeOpt, timeZone: 'Asia/Ho_Chi_Minh' });
             document.getElementById('clock-us').innerText = now.toLocaleTimeString('en-US', { ...timeOpt, timeZone: herTimeZone });
+        }
+
+        function dropLoot() {
+            const resultBox = document.getElementById('loot-result');
+            const randomItem = lootTable[Math.floor(Math.random() * lootTable.length)];
+            resultBox.innerText = randomItem;
         }
         setInterval(updateSystem, 1000);
         updateSystem();
@@ -593,11 +536,11 @@
             }
         }
 
-        // RAIN EFFECT (UPDATED)
+        // RAIN EFFECT
         function triggerRain() {
             const rainBox = document.getElementById('rain-box');
             rainBox.style.display = 'block';
-            const emojis = ['🎉', '💖', '🥳', '🎂', '🖤', '👾'];
+            const emojis = ['🎄', '⛄', '🎁', '🎅', '❄️'];
             for (let i = 0; i < 50; i++) {
                 const drop = document.createElement('div');
                 drop.classList.add('rain-drop');
@@ -627,13 +570,14 @@
         let frame = 0;
 
         function drawPlayer() {
-            ctx.fillStyle = '#00f3ff'; ctx.shadowBlur = 10; ctx.shadowColor = '#00f3ff';
+            ctx.fillStyle = '#ff3333'; /* RED PLAYER */
+            ctx.shadowBlur = 10; ctx.shadowColor = '#ff3333';
             ctx.fillRect(player.x, player.y, player.w, player.h); ctx.shadowBlur = 0;
         }
         function drawObstacles() {
             obstacles.forEach(obs => {
-                if (obs.type === 'fly') ctx.fillStyle = '#ff2a6d';
-                else if (obs.type === 'wide') ctx.fillStyle = '#00ff41';
+                if (obs.type === 'fly') ctx.fillStyle = '#ffeb3b';
+                else if (obs.type === 'wide') ctx.fillStyle = '#00ff88';
                 else ctx.fillStyle = '#b026ff';
                 ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
             });
