@@ -4,31 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Elliot & Lou 🎄</title>
+    <title>Elliot & Lou 🖤</title>
     <link rel="icon" type="image/png" href="delta.png">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Press+Start+2P&display=swap"
         rel="stylesheet">
 
     <style>
-        /* --- THEME CONFIGURATION --- */
+        /* --- THEME CONFIG (Dynamic Variables) --- */
         :root {
-            /* DEFAULT THEME (Keep this for later) */
-            /*
             --bg-deep: #050505;
-            --p1-color: #00f3ff; 
-            --p2-color: #b026ff;
-            --active-green: #00ff41;
-            */
-
-            /* CHRISTMAS THEME (Active) */
-            --bg-deep: #0a0f0a;
             --panel-bg: rgba(20, 20, 20, 0.9);
             --border-color: #333;
-            --p1-color: #ff3333; /* Elliot (Red) */
-            --p2-color: #00ff88; /* Lou (Green) */
+            --p1-color: #00f3ff; /* Default: Cyan */
+            --p2-color: #b026ff; /* Default: Purple */
             --text-main: #fff;
-            --text-dim: #aaa;
-            --active-green: #ffeb3b; /* Gold Star Color */
+            --text-dim: #888;
+            --active-green: #00ff41;
             --quest-gold: #ffd700;
         }
 
@@ -45,24 +36,18 @@
             overflow-x: hidden;
             position: relative;
             touch-action: manipulation;
-            /* Christmas Gradient */
-            background: radial-gradient(circle at 50% 50%, #1a2e1a 0%, #050505 100%);
-            animation: bgPulse 10s infinite alternate;
+            background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, var(--bg-deep) 100%);
+            transition: background 0.5s ease;
         }
 
-        @keyframes bgPulse {
-            0% { background-size: 100% 100%; }
-            100% { background-size: 120% 120%; }
-        }
-
-        /* --- BACKGROUND ANIMATION (SNOW) --- */
+        /* --- BACKGROUND ANIMATION --- */
         .emoji-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0;
-            opacity: 0.15;
+            opacity: 0.08;
             pointer-events: none;
-            font-size: 3rem;
+            font-size: 4rem;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
@@ -71,18 +56,18 @@
         }
 
         .emoji-bg span {
-            animation: float 10s linear infinite; /* Slower, linear fall for snow feel */
+            animation: float 6s ease-in-out infinite;
         }
 
         .emoji-bg span:nth-child(even) {
-            animation-duration: 12s;
-            animation-delay: 2s;
+            animation-duration: 8s;
+            animation-delay: 1s;
         }
 
         @keyframes float {
-            0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
         }
 
         .main-hub {
@@ -96,30 +81,16 @@
         h1 {
             font-family: 'Press Start 2P', cursive;
             font-size: 1.8rem;
-            margin-bottom: 5px;
+            margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 2px;
             background: -webkit-linear-gradient(0deg, var(--p1-color), #fff, var(--p2-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            text-shadow: 0 0 20px rgba(176, 38, 255, 0.3);
             line-height: 1.5;
             cursor: pointer;
             user-select: none;
-        }
-
-        /* --- HOLIDAY BANNER --- */
-        .holiday-banner {
-            font-family: 'Press Start 2P';
-            color: #fff;
-            font-size: 0.65rem;
-            margin-bottom: 25px;
-            padding: 8px 15px;
-            border: 2px solid var(--p1-color);
-            background: rgba(255, 0, 0, 0.1);
-            border-radius: 50px;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
-            display: inline-block;
         }
 
         .subtitle {
@@ -134,13 +105,13 @@
 
         .status-active {
             color: var(--active-green);
-            text-shadow: 0 0 10px rgba(255, 235, 59, 0.6);
-            animation: pulseGreen 2s infinite alternate;
+            text-shadow: 0 0 10px var(--active-green);
+            animation: pulseGreen 1.5s infinite alternate;
         }
 
         @keyframes pulseGreen {
             from { opacity: 0.7; }
-            to { opacity: 1; text-shadow: 0 0 20px var(--active-green); }
+            to { opacity: 1; }
         }
 
         /* --- UPTIME TRACKER --- */
@@ -150,7 +121,7 @@
             padding: 30px;
             border-radius: 12px;
             margin-bottom: 30px;
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.05);
             backdrop-filter: blur(5px);
         }
 
@@ -214,6 +185,7 @@
             position: relative;
             border-bottom-width: 4px;
             border-bottom-style: solid;
+            transition: 0.3s;
         }
 
         .player-card.p1 { border-bottom-color: var(--p1-color); }
@@ -235,22 +207,34 @@
             font-size: 1.8rem; font-weight: 700; font-family: 'Rajdhani', monospace; color: #fff;
         }
 
-        /* --- LOOT SECTION --- */
+        /* --- COMMAND GRID (Buttons) --- */
+        .command-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
         .loot-btn {
             background: transparent;
             border: 2px solid var(--p2-color);
             color: var(--p2-color);
-            padding: 12px 25px;
+            padding: 15px 25px;
             font-family: 'Press Start 2P';
             font-size: 0.8rem;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
-            margin-bottom: 40px;
+            box-shadow: 0 0 10px rgba(176, 38, 255, 0.1);
+            text-transform: uppercase;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .loot-btn:hover {
-            background: var(--p2-color); color: #000; box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); transform: scale(1.05);
+            background: var(--p2-color); color: #000;
+            box-shadow: 0 0 25px var(--p2-color);
+            transform: scale(1.02);
         }
 
         #loot-result {
@@ -258,10 +242,30 @@
             font-family: 'Rajdhani', monospace; font-size: 1.2rem; font-weight: bold;
         }
 
+        /* --- THEME SELECTOR --- */
+        .config-box {
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            margin-bottom: 40px;
+        }
+        .config-title {
+            font-family: 'Press Start 2P'; font-size: 0.6rem; color: #666; margin-bottom: 15px;
+        }
+        .theme-row {
+            display: flex; gap: 10px; justify-content: center;
+        }
+        .theme-btn {
+            background: #111; border: 1px solid #444; color: #888;
+            padding: 8px 12px; font-family: 'Rajdhani'; font-weight: bold; cursor: pointer;
+            font-size: 0.8rem; text-transform: uppercase; transition: 0.2s;
+        }
+        .theme-btn:hover { border-color: #fff; color: #fff; }
+
         /* --- QUEST LOG --- */
         .quest-box {
             background: #000; border: 2px solid var(--text-dim); border-radius: 4px;
-            padding: 20px; text-align: left; margin-bottom: 40px; box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+            padding: 20px; text-align: left; margin-bottom: 40px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
         }
 
         .quest-title {
@@ -295,7 +299,8 @@
         }
 
         #gameCanvas {
-            background: #000; border: 2px solid var(--p1-color); box-shadow: 0 0 15px rgba(255, 50, 50, 0.2);
+            background: #000; border: 2px solid var(--p1-color);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
             display: block; margin: 0 auto; border-radius: 4px; cursor: pointer;
         }
 
@@ -334,8 +339,8 @@
 <body>
 
     <div class="emoji-bg">
-        <span>❄️</span> <span>🎄</span> <span>🎅</span> <span>🎁</span>
-        <span>⛄</span> <span>❄️</span> <span>🍪</span> <span>🦌</span>
+        <span>🖤</span> <span>👾</span> <span>💀</span> <span>🎮</span>
+        <span>🕷️</span> <span>🗡️</span> <span>🖤</span> <span>👾</span>
     </div>
 
     <div id="rain-box" class="rain-container"></div>
@@ -343,14 +348,12 @@
     <div class="main-hub">
         <h1 onclick="triggerMobileCheat()">Server: E & L</h1>
 
-        <div class="holiday-banner">🎄 MERRY CHRISTMAS 🎄</div>
-
         <div class="subtitle">
-            CO-OP CAMPAIGN STATUS: <span class="status-active">[ FESTIVE ]</span>
+            SYSTEM STATUS: <span class="status-active">[ V3.0 ONLINE ]</span>
         </div>
 
         <div class="uptime-container">
-            <span class="uptime-label">🎮 Total Playtime Together 🎮</span>
+            <span class="uptime-label">🎮 Connection Uptime 🎮</span>
 
             <div id="uptime-days" class="big-days-container">
                 <span class="big-number">0</span>
@@ -382,41 +385,52 @@
 
         <div id="loot-result"></div>
 
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-bottom: 40px;">
-            <button class="loot-btn" onclick="dropLoot()" style="margin-bottom: 0;">🎁 OPEN PRESENT</button>
+        <div class="command-grid">
+            <button class="loot-btn" onclick="dropLoot()">🎁 DAILY LOOT BOX</button>
 
             <a href="comfort.html" style="text-decoration: none;">
-                <button class="loot-btn" style="border-color: #ff2a6d; color: #ff2a6d;">♥ ACTIVATE COMFORT PROTOCOL ♥</button>
+                <button class="loot-btn" style="border-color: #ff2a6d; color: #ff2a6d;">
+                    ♥ COMFORT PROTOCOL ♥
+                </button>
             </a>
 
             <a href="boss.html" style="text-decoration: none;">
-                <button class="loot-btn" style="border-color: #fff; color: #fff; margin-top: 10px;">
-                    ⚠️ CHALLENGE THE DISTANCE ⚠️
+                <button class="loot-btn" style="border-color: #fff; color: #fff;">
+                    ⚠️ BOSS RAID ⚠️
                 </button>
             </a>
         </div>
 
+        <div class="config-box">
+            <div class="config-title">SYSTEM CONFIGURATION</div>
+            <div class="theme-row">
+                <button class="theme-btn" onclick="setTheme('default')">DEFAULT</button>
+                <button class="theme-btn" onclick="setTheme('love')">LOVER.OS</button>
+                <button class="theme-btn" onclick="setTheme('matrix')">NETRUNNER</button>
+            </div>
+        </div>
+
         <div class="quest-box">
-            <div class="quest-title">📜 Active Quest Log</div>
+            <div class="quest-title">📜 Daily Quests</div>
 
             <div class="quest-item">
                 <input type="checkbox" class="quest-checkbox" disabled>
-                <span>🛡️ Main Quest: Close the Distance</span>
+                <span>🛡️ Main: Close the Distance</span>
             </div>
 
             <div class="quest-item">
                 <input type="checkbox" class="quest-checkbox" id="q1" onchange="toggleQuest('q1')">
-                <span>💧 Daily: Drink Water Check</span>
+                <span>💧 Drink Water</span>
             </div>
 
             <div class="quest-item">
                 <input type="checkbox" class="quest-checkbox" id="q2" onchange="toggleQuest('q2')">
-                <span>📞 Daily: Call / Voice Message</span>
+                <span>📞 Call / Voice Note</span>
             </div>
 
             <div class="quest-item">
                 <input type="checkbox" class="quest-checkbox" id="q3" onchange="toggleQuest('q3')">
-                <span>📸 Side Quest: Send a Cute Pic</span>
+                <span>📸 Send Cute Pic</span>
             </div>
         </div>
 
@@ -433,36 +447,56 @@
         const startDate = new Date('2025-11-16T00:00:00');
         const herTimeZone = 'America/New_York';
 
-        // --- LOOT (MASSIVE LIST) ---
+        // --- THEME SWITCHER LOGIC ---
+        function setTheme(theme) {
+            const root = document.documentElement;
+            
+            if (theme === 'default') {
+                root.style.setProperty('--p1-color', '#00f3ff');
+                root.style.setProperty('--p2-color', '#b026ff');
+                root.style.setProperty('--active-green', '#00ff41');
+                root.style.setProperty('--bg-deep', '#050505');
+            } else if (theme === 'love') {
+                root.style.setProperty('--p1-color', '#ff3366'); // Hot Pink
+                root.style.setProperty('--p2-color', '#ff99cc'); // Soft Pink
+                root.style.setProperty('--active-green', '#ff3366');
+                root.style.setProperty('--bg-deep', '#1a0505');
+            } else if (theme === 'matrix') {
+                root.style.setProperty('--p1-color', '#00ff00'); // Matrix Green
+                root.style.setProperty('--p2-color', '#008f11'); // Darker Green
+                root.style.setProperty('--active-green', '#00ff00');
+                root.style.setProperty('--bg-deep', '#000000');
+            }
+            
+            localStorage.setItem('siteTheme', theme);
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('siteTheme');
+        if (savedTheme) setTheme(savedTheme);
+
+        // --- LOOT (RESTORED TO NORMAL) ---
         const lootTable = [
-            "Item Acquired: 1x Big Hug 🫂", "Critical Hit! You look amazing today 🖤",
-            "Quest Added: Call Elliot 📞", "Item: 'I Love You' Coupon (Redeemable anytime)",
+            "Item: 1x Big Hug 🫂", "Critical Hit! You look amazing today 🖤",
+            "Quest Added: Call Elliot 📞", "Item: 'I Love You' Coupon",
             "Status: Thinking about you... 💭", "Inventory: +1 Kiss 💋",
             "Reminder: We make a great team 🎮", "Drop: Virtual Forehead Kiss",
             "Achievement: Woke up cute today", "System: I miss you more than my PC",
-            "Buff: +50 Happiness applied", "Note: You are my Player 2 for life",
-            "Reward: 1x Virtual Hoodie (Smells like me)", "Status Effect: 'Love-struck' is active",
+            "Buff: +50 Happiness", "Note: You are my Player 2 for life",
+            "Reward: 1x Virtual Hoodie", "Status: Love-struck",
             "Drop: 1000 Headpats", "Message: Stop being so pretty (jk don't stop)",
-            "Daily Reward: I love you so much", "Unlock: Secret Snack Stash (When I visit)",
             "Ping: 0ms (My heart is right there)", "Loot: One (1) Aggressive Hug",
-            "Alert: You are the best girlfriend ever", "Notice: I am obsessed with you. Period.",
-            "Drop: Infinite Cuddle Voucher", "System: You are my favorite notification",
-            "Message: <3 <3 <3", "Nerf: Distance is OP today, pls nerf",
+            "Alert: Best girlfriend ever", "Notice: Obsessed with you.",
+            "Drop: Infinite Cuddle Voucher", "System: Favorite notification",
+            "Message: <3 <3 <3", "Nerf: Distance is OP, pls nerf",
             "Drop: Legendary Item [My Heart]", "Summoning: One sleepy boyfriend...",
-            "System: Connection to heart established", "Buff: Infinite Patience for Lag",
-            "Patch Note: You just got cuter in v2.0", "Status: Simping for Lou",
-            "Achievement: Stole my hoodie (Remotely)", "Quest: Defeat the 'Sadness' Boss",
-            "Loot Box: Contains 100% pure love", "Warning: Excessive cuteness detected",
-            "Skill Unlocked: Making me smile instantly", "Drop: Protection Charm against bad days",
-            "The Void stares back and sends a kiss", "Bat Signal Received: Sending love 🦇",
-            "Message: You look goth and gorgeous", "Critical Hit! My heart took 9999 damage",
-            "Respawn Point set to: In my arms", "Quest: Drink water or I will cry",
-            "Reminder: Check your posture, gamer", "Quest: Eat something yummy right now",
-            "Loading... Kiss sent successfully", "Error 404: Too far away (Fixing soon...)",
-            "Quest: Send a selfie (Optional but encouraged)", "Drop: Get out of chores card",
-            "System: Brain is 90% thinking about you", "Loot: 1x Back scratch (Redeemable in person)",
-            "Alert: Missing Player 2", "Status: Currently 100% committed",
-            "Event: Movie night coupon generated", "Achievement: Surviving another day without me"
+            "System: Connection established", "Buff: Infinite Patience",
+            "Patch Note: You just got cuter", "Status: Simping for Lou",
+            "Loot Box: 100% pure love", "Warning: Excessive cuteness",
+            "Skill Unlocked: Making me smile", "Drop: Protection Charm",
+            "Bat Signal: Sending love 🦇", "Message: Goth and gorgeous",
+            "Respawn Point: In my arms", "Quest: Drink water",
+            "Reminder: Check posture", "Quest: Eat something yummy"
         ];
 
         function updateSystem() {
@@ -498,6 +532,7 @@
         function toggleQuest(id) {
             const checkbox = document.getElementById(id);
             const parent = checkbox.parentElement;
+
             if (checkbox.checked) {
                 parent.classList.add('completed');
                 localStorage.setItem(id, 'done');
@@ -506,6 +541,7 @@
                 localStorage.removeItem(id);
             }
         }
+
         window.addEventListener('load', () => {
             ['q1', 'q2', 'q3'].forEach(id => {
                 if (localStorage.getItem(id) === 'done') {
@@ -518,10 +554,14 @@
         // --- CHEAT CODE LOGIC ---
         let keySequence = [];
         const secretCode = "love";
+
         document.addEventListener('keydown', (e) => {
             keySequence.push(e.key.toLowerCase());
             if (keySequence.length > secretCode.length) keySequence.shift();
-            if (keySequence.join('') === secretCode) triggerRain();
+
+            if (keySequence.join('') === secretCode) {
+                triggerRain();
+            }
         });
 
         let tapCount = 0;
@@ -530,17 +570,19 @@
             tapCount++;
             clearTimeout(tapTimer);
             tapTimer = setTimeout(() => { tapCount = 0; }, 1000); 
+
             if (tapCount === 5) {
                 triggerRain();
                 tapCount = 0;
             }
         }
 
-        // RAIN EFFECT
         function triggerRain() {
             const rainBox = document.getElementById('rain-box');
             rainBox.style.display = 'block';
-            const emojis = ['🎄', '⛄', '🎁', '🎅', '❄️'];
+
+            const emojis = ['❤️', '🖤', '👾', '🎮', '💀', '💋'];
+
             for (let i = 0; i < 50; i++) {
                 const drop = document.createElement('div');
                 drop.classList.add('rain-drop');
@@ -548,6 +590,7 @@
                 drop.style.left = Math.random() * 100 + 'vw';
                 drop.style.animationDuration = (Math.random() * 2 + 1) + 's';
                 drop.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+
                 rainBox.appendChild(drop);
                 setTimeout(() => drop.remove(), 4000);
             }
@@ -557,73 +600,136 @@
         // --- MINIGAME ---
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+
         let highScore = localStorage.getItem('dinoHighScore') || 0;
         document.getElementById('high-score').innerText = highScore;
+
         let gameRunning = false;
         let score = 0;
+
         let isMobile = window.innerWidth < 600;
         let speed = isMobile ? 14 : 6;
         let gravity = isMobile ? 0.9 : 0.5;
         let jumpPower = isMobile ? -13 : -10;
+
         let player = { x: 50, y: 100, w: 20, h: 20, dy: 0, jumpPower: jumpPower, grounded: true };
         let obstacles = [];
         let frame = 0;
 
         function drawPlayer() {
-            ctx.fillStyle = '#ff3333'; /* RED PLAYER */
-            ctx.shadowBlur = 10; ctx.shadowColor = '#ff3333';
-            ctx.fillRect(player.x, player.y, player.w, player.h); ctx.shadowBlur = 0;
+            const p1Color = getComputedStyle(document.documentElement).getPropertyValue('--p1-color').trim();
+            ctx.fillStyle = p1Color;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = p1Color;
+            ctx.fillRect(player.x, player.y, player.w, player.h);
+            ctx.shadowBlur = 0;
         }
+
         function drawObstacles() {
+            const p2Color = getComputedStyle(document.documentElement).getPropertyValue('--p2-color').trim();
             obstacles.forEach(obs => {
-                if (obs.type === 'fly') ctx.fillStyle = '#ffeb3b';
-                else if (obs.type === 'wide') ctx.fillStyle = '#00ff88';
-                else ctx.fillStyle = '#b026ff';
+                if (obs.type === 'fly') ctx.fillStyle = '#ff2a6d';
+                else if (obs.type === 'wide') ctx.fillStyle = '#00ff41';
+                else ctx.fillStyle = p2Color;
+
                 ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
             });
         }
+
         function updateGame() {
             if (!gameRunning) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            player.dy += gravity; player.y += player.dy;
-            if (player.y > 110) { player.y = 110; player.dy = 0; player.grounded = true; }
+
+            player.dy += gravity;
+            player.y += player.dy;
+
+            if (player.y > 110) {
+                player.y = 110;
+                player.dy = 0;
+                player.grounded = true;
+            }
+
             frame++;
             let spawnRate = isMobile ? 40 : 90;
+
             if (frame % spawnRate === 0) {
                 let typeSeed = Math.random();
                 let newObs = { x: canvas.width, y: 110, w: 20, h: 20, type: 'std' };
-                if (typeSeed > 0.7) { newObs.type = 'fly'; newObs.y = 90; newObs.h = 15; newObs.w = 15; }
-                else if (typeSeed > 0.4) { newObs.type = 'wide'; newObs.y = 115; newObs.w = 30; newObs.h = 15; }
-                else { newObs.y = 110; newObs.h = 20; }
+
+                if (typeSeed > 0.7) {
+                    newObs.type = 'fly'; newObs.y = 90; newObs.h = 15; newObs.w = 15;
+                } else if (typeSeed > 0.4) {
+                    newObs.type = 'wide'; newObs.y = 115; newObs.w = 30; newObs.h = 15;
+                } else {
+                    newObs.y = 110; newObs.h = 20;
+                }
                 obstacles.push(newObs);
             }
+
             obstacles.forEach((obs, index) => {
                 obs.x -= speed;
-                if (player.x < obs.x + obs.w && player.x + player.w > obs.x && player.y < obs.y + obs.h && player.h + player.y > obs.y) { gameOver(); }
-                if (obs.x + obs.w < 0) { obstacles.splice(index, 1); score += 10; }
+
+                if (player.x < obs.x + obs.w && player.x + player.w > obs.x && player.y < obs.y + obs.h && player.h + player.y > obs.y) {
+                    gameOver();
+                }
+
+                if (obs.x + obs.w < 0) {
+                    obstacles.splice(index, 1);
+                    score += 10;
+                }
             });
-            drawPlayer(); drawObstacles();
-            ctx.fillStyle = '#fff'; ctx.font = '10px "Press Start 2P"';
+
+            drawPlayer();
+            drawObstacles();
+
+            ctx.fillStyle = '#fff';
+            ctx.font = '10px "Press Start 2P"';
             ctx.fillText("DISTANCE: " + score + "km", 10, 20);
+
             requestAnimationFrame(updateGame);
         }
+
         function jump() {
-            if (!gameRunning) { resetGame(); }
-            else if (player.grounded) { player.dy = player.jumpPower; player.grounded = false; }
+            if (!gameRunning) {
+                resetGame();
+            } else if (player.grounded) {
+                player.dy = player.jumpPower;
+                player.grounded = false;
+            }
         }
+
         function gameOver() {
             gameRunning = false;
-            if (score > highScore) { highScore = score; localStorage.setItem('dinoHighScore', highScore); document.getElementById('high-score').innerText = highScore; }
-            ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#fff'; ctx.fillText("GAME OVER", 250, 60); ctx.fillText("Score: " + score, 260, 80); ctx.fillText("Tap to Retry", 245, 100);
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('dinoHighScore', highScore);
+                document.getElementById('high-score').innerText = highScore;
+            }
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fff';
+            ctx.fillText("GAME OVER", 250, 60);
+            ctx.fillText("Score: " + score, 260, 80);
+            ctx.fillText("Tap to Retry", 245, 100);
         }
+
         function resetGame() {
-            gameRunning = true; score = 0; obstacles = []; player.y = 110; player.dy = 0; frame = 0; updateGame();
+            gameRunning = true;
+            score = 0;
+            obstacles = [];
+            player.y = 110;
+            player.dy = 0;
+            frame = 0;
+            updateGame();
         }
+
         document.addEventListener('keydown', (e) => { if (e.code === 'Space') { e.preventDefault(); jump(); } });
         canvas.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); });
         canvas.addEventListener('mousedown', (e) => { e.preventDefault(); jump(); });
-        ctx.fillStyle = '#fff'; ctx.font = '12px "Press Start 2P"'; ctx.fillText("CLICK TO START", 230, 80);
+
+        ctx.fillStyle = '#fff';
+        ctx.font = '12px "Press Start 2P"';
+        ctx.fillText("CLICK TO START", 230, 80);
     </script>
 </body>
 
