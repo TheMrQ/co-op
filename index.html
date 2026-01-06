@@ -10,13 +10,13 @@
         rel="stylesheet">
 
     <style>
-        /* --- THEME CONFIG (Dynamic Variables) --- */
+        /* --- THEME CONFIG --- */
         :root {
             --bg-deep: #050505;
             --panel-bg: rgba(20, 20, 20, 0.9);
             --border-color: #333;
-            --p1-color: #00f3ff; /* Default: Cyan */
-            --p2-color: #b026ff; /* Default: Purple */
+            --p1-color: #00f3ff;
+            --p2-color: #b026ff;
             --text-main: #fff;
             --text-dim: #888;
             --active-green: #00ff41;
@@ -43,7 +43,10 @@
         /* --- BACKGROUND ANIMATION --- */
         .emoji-bg {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 0;
             opacity: 0.08;
             pointer-events: none;
@@ -70,12 +73,25 @@
             100% { transform: translateY(0px); }
         }
 
+        /* --- ZELDA SHIELD (Hidden by default) --- */
+        #hylian-shield {
+            position: absolute;
+            top: 40px;
+            width: 120px;
+            opacity: 0;
+            transition: opacity 0.5s, transform 0.5s;
+            z-index: 1;
+            pointer-events: none;
+            filter: drop-shadow(0 0 15px #ffd700);
+        }
+
         .main-hub {
             width: 90%;
             max-width: 800px;
             text-align: center;
             z-index: 2;
             padding: 40px 0;
+            position: relative;
         }
 
         h1 {
@@ -91,6 +107,8 @@
             line-height: 1.5;
             cursor: pointer;
             user-select: none;
+            position: relative;
+            z-index: 3;
         }
 
         .subtitle {
@@ -207,7 +225,7 @@
             font-size: 1.8rem; font-weight: 700; font-family: 'Rajdhani', monospace; color: #fff;
         }
 
-        /* --- COMMAND GRID (Buttons) --- */
+        /* --- COMMAND GRID --- */
         .command-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -252,7 +270,7 @@
             font-family: 'Press Start 2P'; font-size: 0.6rem; color: #666; margin-bottom: 15px;
         }
         .theme-row {
-            display: flex; gap: 10px; justify-content: center;
+            display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
         }
         .theme-btn {
             background: #111; border: 1px solid #444; color: #888;
@@ -338,7 +356,7 @@
 
 <body>
 
-    <div class="emoji-bg">
+    <div class="emoji-bg" id="emoji-container">
         <span>🖤</span> <span>👾</span> <span>💀</span> <span>🎮</span>
         <span>🕷️</span> <span>🗡️</span> <span>🖤</span> <span>👾</span>
     </div>
@@ -346,10 +364,12 @@
     <div id="rain-box" class="rain-container"></div>
 
     <div class="main-hub">
+        <img id="hylian-shield" src="zeldashield.png" alt="Shield">
+        
         <h1 onclick="triggerMobileCheat()">Server: E & L</h1>
 
         <div class="subtitle">
-            SYSTEM STATUS: <span class="status-active">[ V3.0 ONLINE ]</span>
+            CO-OP CAMPAIGN STATUS: <span class="status-active">[ ACTIVE ]</span>
         </div>
 
         <div class="uptime-container">
@@ -407,6 +427,7 @@
                 <button class="theme-btn" onclick="setTheme('default')">DEFAULT</button>
                 <button class="theme-btn" onclick="setTheme('love')">LOVER.OS</button>
                 <button class="theme-btn" onclick="setTheme('matrix')">NETRUNNER</button>
+                <button class="theme-btn" onclick="setTheme('hyrule')" style="color: gold; border-color: gold;">HYRULE</button>
             </div>
         </div>
 
@@ -450,22 +471,44 @@
         // --- THEME SWITCHER LOGIC ---
         function setTheme(theme) {
             const root = document.documentElement;
+            const shield = document.getElementById('hylian-shield');
+            const bg = document.getElementById('emoji-container');
+            
+            // RESET
+            shield.style.opacity = '0';
+            shield.style.transform = 'translateY(0) scale(1)';
             
             if (theme === 'default') {
                 root.style.setProperty('--p1-color', '#00f3ff');
                 root.style.setProperty('--p2-color', '#b026ff');
                 root.style.setProperty('--active-green', '#00ff41');
                 root.style.setProperty('--bg-deep', '#050505');
-            } else if (theme === 'love') {
-                root.style.setProperty('--p1-color', '#ff3366'); // Hot Pink
-                root.style.setProperty('--p2-color', '#ff99cc'); // Soft Pink
+                bg.innerHTML = '<span>🖤</span> <span>👾</span> <span>💀</span> <span>🎮</span> <span>🕷️</span> <span>🗡️</span>';
+            } 
+            else if (theme === 'love') {
+                root.style.setProperty('--p1-color', '#ff3366');
+                root.style.setProperty('--p2-color', '#ff99cc');
                 root.style.setProperty('--active-green', '#ff3366');
                 root.style.setProperty('--bg-deep', '#1a0505');
-            } else if (theme === 'matrix') {
-                root.style.setProperty('--p1-color', '#00ff00'); // Matrix Green
-                root.style.setProperty('--p2-color', '#008f11'); // Darker Green
+                bg.innerHTML = '<span>💖</span> <span>💋</span> <span>💌</span> <span>💑</span> <span>🌸</span> <span>🎀</span>';
+            } 
+            else if (theme === 'matrix') {
+                root.style.setProperty('--p1-color', '#00ff00');
+                root.style.setProperty('--p2-color', '#008f11');
                 root.style.setProperty('--active-green', '#00ff00');
                 root.style.setProperty('--bg-deep', '#000000');
+                bg.innerHTML = '<span>0</span> <span>1</span> <span>0</span> <span>1</span> <span>💾</span> <span>📠</span>';
+            }
+            else if (theme === 'hyrule') {
+                root.style.setProperty('--p1-color', '#10a830'); /* Link Green */
+                root.style.setProperty('--p2-color', '#ffd700'); /* Zelda Gold */
+                root.style.setProperty('--active-green', '#ffd700');
+                root.style.setProperty('--bg-deep', '#0a0800'); /* Deep Earth */
+                bg.innerHTML = '<span>🗡️</span> <span>🛡️</span> <span>🧚</span> <span>💎</span> <span>🏺</span> <span>🏹</span>';
+                
+                // Show Shield
+                shield.style.opacity = '1';
+                shield.style.transform = 'translateY(-20px) scale(1.1)';
             }
             
             localStorage.setItem('siteTheme', theme);
@@ -475,7 +518,7 @@
         const savedTheme = localStorage.getItem('siteTheme');
         if (savedTheme) setTheme(savedTheme);
 
-        // --- LOOT (RESTORED TO NORMAL) ---
+        // --- LOOT ---
         const lootTable = [
             "Item: 1x Big Hug 🫂", "Critical Hit! You look amazing today 🖤",
             "Quest Added: Call Elliot 📞", "Item: 'I Love You' Coupon",
@@ -528,7 +571,7 @@
         setInterval(updateSystem, 1000);
         updateSystem();
 
-        // --- QUEST LOG LOGIC ---
+        // --- QUEST LOG ---
         function toggleQuest(id) {
             const checkbox = document.getElementById(id);
             const parent = checkbox.parentElement;
@@ -551,7 +594,7 @@
             });
         });
 
-        // --- CHEAT CODE LOGIC ---
+        // --- CHEAT CODE ---
         let keySequence = [];
         const secretCode = "love";
 
